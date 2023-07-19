@@ -1,0 +1,109 @@
+import java.io.*;
+
+public class Solution {
+	
+	static int[] arr;
+	
+	public static String maximum(){
+		int change,i,k;
+		boolean flag = false;
+		int[] temp = new int[arr.length];
+		int biggest=0, hap;
+		for(int l=0; l<arr.length; ++l) {
+			temp[l] = arr[l];
+			biggest*=10;
+			biggest+=arr[l];
+		}
+		for(i=0; i<arr.length-1; ++i) {
+			for(k=i+1; k<arr.length; ++k) {
+				change = arr[i];
+				arr[i] = arr[k];
+				arr[k] = change;
+				if(arr[0]!=0) {
+					hap=0;
+					for(int l=0; l<arr.length; ++l) {
+						hap*=10;
+						hap+=arr[l];
+					}
+					if(biggest<hap) {
+						biggest=hap;
+						for(int l=0; l<arr.length; ++l) {
+							temp[l] = arr[l];
+						}
+					}
+				}
+				change = arr[i];
+				arr[i] = arr[k];
+				arr[k] = change;
+			}
+			
+		}
+		
+		String ret = "";
+		for(i=0; i<temp.length; ++i) {
+			ret+=String.valueOf(temp[i]);
+		}
+		return ret;
+	}
+	public static String minimum(){
+		int change,i,k;
+		boolean flag = false;
+		int[] temp = new int[arr.length];
+		int smallest=0, hap;
+		for(int l=0; l<arr.length; ++l) {
+			temp[l] = arr[l];
+			smallest*=10;
+			smallest+=arr[l];
+		}
+		for(i=0; i<arr.length-1; ++i) {
+			for(k=i+1; k<arr.length; ++k) {
+				change = arr[i];
+				arr[i] = arr[k];
+				arr[k] = change;
+				if(arr[0]!=0) {
+					hap=0;
+					for(int l=0; l<arr.length; ++l) {
+						hap*=10;
+						hap+=arr[l];
+					}
+					if(smallest>hap) {
+						smallest=hap;
+						for(int l=0; l<arr.length; ++l) {
+							temp[l] = arr[l];
+						}
+					}
+				}
+				change = arr[i];
+				arr[i] = arr[k];
+				arr[k] = change;
+			}
+			
+		}
+		
+		String ret = "";
+		for(i=0; i<temp.length; ++i) {
+			ret+=String.valueOf(temp[i]);
+		}
+		return ret;
+	}
+	
+	
+	public static void main(String[] args) throws IOException{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+		int testcase = Integer.parseInt(br.readLine());
+		int t,i;
+		String s;
+		for(t=1; t<=testcase; ++t) {
+			s = br.readLine();
+			arr = new int[s.length()];
+			for(i=0; i<s.length(); ++i) {
+				arr[i] = (int)(s.charAt(i)-'0');
+			}
+			//System.out.println(minimum()+" "+maximum());
+			bw.write("#"+String.valueOf(t)+" "+minimum()+" "+maximum()+"\n");
+		}
+		bw.flush();
+	}
+}
+	

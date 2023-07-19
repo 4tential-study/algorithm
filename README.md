@@ -9,11 +9,7 @@
 
 ## 컨벤션
 ### Pull Request
-[Programmers]날짜 - 이름
-
-[Baekjoon]날짜 - 이름
-
-[Swea]날짜 - 이름
+[날짜]이름
 
 ### Commit
 [Programmers]문제번호 - 풀이방식

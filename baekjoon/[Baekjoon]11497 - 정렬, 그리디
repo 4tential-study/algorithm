@@ -1,0 +1,52 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+
+	static int[] arr;
+	static int num;
+	
+	public static int solve() {
+		Arrays.sort(arr);
+		ArrayList<Integer> al = new ArrayList<>();
+		int i;
+		for(i=0; i<num; ++i) {
+			if(i%2==0) {
+				al.add(arr[i]);
+				arr[i] = 0;
+			}
+		}
+		for(i=num-1; i>=0; --i) {
+			if(arr[i]!=0) {
+				al.add(arr[i]);
+			}
+		}
+		int now, next, maximum = 0;
+		for(i=0; i<num-1; ++i) {
+			now = al.get(i);
+			next = al.get(i+1);
+			maximum = Math.max(Math.abs(now-next), maximum);
+		}
+		maximum = Math.max(Math.abs(al.get(0)-al.get(al.size()-1)), maximum);
+		return maximum;
+	}
+	
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+		int testcase, t,i;
+		testcase = Integer.parseInt(br.readLine());
+		StringTokenizer st;
+		for(t=1; t<=testcase; ++t) {
+			num = Integer.parseInt(br.readLine());
+			arr = new int[num];
+			st = new StringTokenizer(br.readLine());
+			for(i=0; i<num; ++i) {
+				arr[i] = Integer.parseInt(st.nextToken());
+			}
+			bw.write(String.valueOf(solve())+"\n");
+		}
+		bw.flush();
+	}
+	
+}

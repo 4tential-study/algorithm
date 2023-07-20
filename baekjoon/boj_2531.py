@@ -1,52 +1,57 @@
-def solution():
-    input_line = list(map(int,input().split()))
-    N : int = int(input_line[0])
-    d : int = int(input_line[1]) # 초밥의 총 가짓수
-    k : int = int(input_line[2]) # 연속해서 먹을 접시 수
-    c : int = int(input_line[3]) # 쿠폰의 초밥번호
-    # 회전초밥을 넣을 리스트 생성
-    plates = []
-    # 넣기
-    for i in range(N):
-        n = int(input())
-        plates.append(n)
-
-    # 초밥종류만큼의 리스트 생성
-    kind_of_plate = [0] * (d+1)
-    # 쿠폰번호에 적힌 초밥번호 + 1
+import sys
+from collections import defaultdict
 
 
-    #초밥 종류 개수
-    count: int = 0
+import sys
+from collections import defaultdict
 
+# n : 회전 초밥 벨트에 놓인 접시의 수
+# d : 초밥의 가짓수
+# k : 연속해서 먹는 접시의 수
+# c : 쿠폰 번호
+n, d, k, c = map(int, sys.stdin.readline().split())
 
+# 초밥 접시 상황
+arr = []
+for _ in range(n):
+    arr.append(int(sys.stdin.readline()))
 
-    print(":", count)
+# 구간 인덱스 초기화
+left, right = 0, k-1
 
-    for idx in range(0, N):
-        # [배열이 초과하는 경우]
-        end = idx + k
-        if end >= N:
-            end = end % N
+# 구간 내의 접시 종류별 개수
+dict = defaultdict(int)
 
-        # 처음
-        if idx == 0:
-            for i in range(idx, end):
-                if kind_of_plate[plates[i]] == 0:
-                    kind_of_plate[plates[i]] += 1
-                    count += 1
-        else: # 이후
-            for i in range(idx, end):
-                kind_of_plate[idx] -= 1
-                if kind_of_plate[idx] == 0:
-                    count -= 1
-                if kind_of_plate[end] == 0:
-                    kind_of_plate[end] += 1
-                    count += 1
-    # 쿠폰 초밥 추가
-    if kind_of_plate[c] == 0:
-        count += 1
-    print(count)
+# 구간 내에는 항상 쿠폰 번호가 포함되어있다고 가정
+dict[c] += 1
 
+# 첫 시작 구간의 접시 종류별 개수 저장
+for i in range(right+1):
+    dict[arr[i]] += 1
 
-solution()
+# 구간 내의 최대 접시 종류 개수 초기화
+result = -int(1e9)
+
+# 슬라이딩 윈도우 진행
+while left < n:
+
+    # 현재 구간 내의 접시 종류 개수와 최대 접시 종류 개수를 비교
+    result = max(len(dict), result)
+
+    # 윈도우를 오른쪽으로 한 칸씩 이동하기 위한 작업 진행
+
+    # 현재 구간 내의 가장 왼쪽 접시를 제거
+    dict[arr[left]] -= 1
+    # 이제 해당 종류의 접시가 남아있지 않다면, 딕셔너리에서 제거
+    if (dict[arr[left]] == 0):
+        del dict[arr[left]]
+    # 왼쪽 인덱스를 오른쪽으로 한 칸 이동
+    left += 1
+
+    # 오른쪽 인덱스를 오른쪽으로 한 칸 이동
+    right += 1
+    # 현재 구간 내의 가장 오른쪽 접시를 추가
+    dict[arr[right % n]] += 1
+
+# 결과 출력
+print(result)

@@ -54,7 +54,6 @@ public class boj_14225 {
             result[sum+number] = 1;
             combination( i+1, sum+number , result );
             visited[i] = false;
-
         }
     }
 

@@ -1,3 +1,10 @@
+<<<<<<< HEAD
 /bin/
 /out
 /baekjoon/bin
+=======
+/.idea
+/out
+/baekjoon/venv
+/baekjoon/.idea
+>>>>>>> 9905e69cf8366cfc020409e08ebe38e89a90033c

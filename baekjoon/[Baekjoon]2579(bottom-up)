@@ -1,0 +1,32 @@
+#include<iostream>
+#define fastio ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+
+using namespace std;
+
+int arr[301];
+int dp[301];
+int num;
+
+int solve(){
+	int i;
+	for(i=1; i<=num; ++i){
+		dp[i] = 0;
+	}
+	dp[1] = arr[1];
+	dp[2] = arr[1]+arr[2];
+	dp[3] = max(arr[1]+arr[3], arr[2]+arr[3]);
+	for(i=4; i<=num; ++i){
+		dp[i] = arr[i]+max(dp[i-2], dp[i-3]+arr[i-1]);
+	}
+	return dp[num];
+}
+
+int main(void)
+{
+	cin>>num;
+	for(int i=1; i<=num; ++i){
+		cin>>arr[i];
+	}
+	cout<<solve();
+	return 0;
+}

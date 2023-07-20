@@ -8,6 +8,7 @@ int dp[301];
 int num;
 
 int solve(){
+
 	int i;
 	for(i=1; i<=num; ++i){
 		dp[i] = 0;

@@ -2,3 +2,8 @@
 /out
 /baekjoon/venv
 /baekjoon/.idea
+.classpath
+.project
+/.metadata
+/.settings
+/build

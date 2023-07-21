@@ -31,7 +31,7 @@ public class boj_15686 {
             }
         }
 
-        search( homes, chickens, M)
+        search( homes, chickens, M);
 
 //        System.out.println(answer);
     }

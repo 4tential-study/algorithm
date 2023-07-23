@@ -1,4 +1,4 @@
-package Algorithm.boj.day0723;
+package Algorithm.boj.day0723; 
 
 import java.io.BufferedReader;
 import java.io.IOException;

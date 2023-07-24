@@ -2,3 +2,7 @@
 /out
 /baekjoon/venv
 /baekjoon/.idea
+.settings
+/.metadata
+/src
+/baekjoon/bin

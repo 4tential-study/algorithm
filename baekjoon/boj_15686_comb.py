@@ -20,7 +20,7 @@ for i in home:
     for j in range(len(pick_chicken)):
         a = 100
         for k in pick_chicken[j]:
-            temp = abs(i[0]-k[0])+abs(i[1]-k[1])
+            temp = abs(i[0]-k[0])+abs(i[1]-sk[1])
             a= min(a, temp)
         result[j] += a
 

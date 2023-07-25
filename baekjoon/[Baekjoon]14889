@@ -1,0 +1,69 @@
+#include<iostream>
+#include<vector>
+#include<math.h>
+using namespace std;
+
+int len, minimum = 2100000000;
+int pan[21][21];
+vector<int> team;
+
+void get_2teams(int prevIndex) {
+	if (team.size() == (len / 2)) {
+		bool check[21];
+		for (int i = 1; i <= len; ++i) {
+			check[i] = false;
+		}
+		for (int i = 0; i < team.size(); ++i) {
+			check[team[i]] = true;
+		}
+		vector<int> sangdae;
+		for (int i = 1; i <= len; ++i) {
+			if (!check[i]) sangdae.push_back(i);
+		}
+		int team1 = 0, team2 = 0;
+		for (int i = 0; i < team.size(); ++i) {
+			for (int k = 0; k < team.size(); ++k) {
+				if (team[i] != team[k]) {
+					team1 += pan[team[i]][team[k]];
+				}
+			}
+		}
+		for (int i = 0; i < sangdae.size(); ++i) {
+			for (int k = 0; k < sangdae.size(); ++k) {
+				if (sangdae[i] != sangdae[k]) {
+					team2 += pan[sangdae[i]][sangdae[k]];
+				}
+			}
+		}
+		//cout << team1 << " " << team2 << endl;
+		int cha = team1 - team2;
+		cha = cha < 0 ? (-1)*cha: cha;
+		if (minimum > cha) minimum = cha;
+		return;
+	}
+	int nowIndex = prevIndex + 1;
+	int i;
+	for (i = nowIndex; i <= len; ++i) {
+		team.push_back(i);
+		get_2teams(i);
+		team.pop_back();
+	}
+}
+
+int solve() {
+	get_2teams(0);
+	return minimum;
+}
+
+int main(void)
+{
+	cin >> len;
+	int i, k;
+	for (i = 1; i <= len; ++i) {
+		for (k = 1; k <= len; ++k) {
+			cin >> pan[i][k];
+		}
+	}
+	cout << solve();
+	return 0;
+}

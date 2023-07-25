@@ -2,9 +2,10 @@
 /out
 /baekjoon/venv
 /baekjoon/.idea
-<<<<<<< HEAD
+
 .settings
 /.metadata
 /src
 /baekjoon/bin
 /build
+/baekjoon/.project

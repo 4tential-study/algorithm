@@ -11,3 +11,5 @@
 /baekjoon/.project
 .classpath
 .idea
+.project
+.DS_Store

@@ -9,3 +9,5 @@
 /baekjoon/bin
 /build
 /baekjoon/.project
+.classpath
+.idea

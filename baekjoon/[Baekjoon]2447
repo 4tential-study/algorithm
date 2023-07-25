@@ -5,7 +5,6 @@ using namespace std;
 int len;
 char pan[2190][2190];
 
-
 void set_star(int sy, int sx, int now_len) {
 	//cout << sy <<" "<< sx <<" "<< now_len << endl;
 	if (now_len == 1) {

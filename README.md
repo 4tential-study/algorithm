@@ -18,7 +18,41 @@
 
 [Swea]문제번호 - 풀이방식
 
+## 스터디원
+<table>
+    <tr>
+        <td height="140px" align="center"><img src="https://avatars.githubusercontent.com/sungjjss9707" width="140px" /></td>
+        <td height="140px" align="center"><img src="https://avatars.githubusercontent.com/seoeunbae" width="140px" /></td>
+        <td height="140px" align="center"><img src="https://avatars.githubusercontent.com/SimDrone" width="140px" /></td>
+        <td height="140px" align="center"><img src="https://avatars.githubusercontent.com/eoniedev" width="140px" /></td>
+        <td height="140px" align="center"><img src="https://avatars.githubusercontent.com/Ferrorist" width="140px" /></td>
+        <td height="140px" align="center"><img src="https://avatars.githubusercontent.com/Park-chan-00" width="140px" /></td>
+    </tr>
+    <tr>
+        <td align="center">
+          <a href="https://github.com/sungjjss9707"> 성준혁 </a>
+        </td>
+        <td align="center">
+          <a href="https://github.com/seoeunbae"> 배서은 </a>
+        </td>
+        <td align="center">
+          <a href="https://github.com/SimDrone"> 심연진 </a>
+        </td>
+        <td align="center">
+          <a href="https://github.com/eoniedev"> 김지언 </a>
+        </td>
+        <td align="center">
+          <a href="https://github.com/Ferrorist"> 박다민 </a>
+        </td>
+        <td align="center">
+          <a href="https://github.com/Park-chan-00"> 박찬영 </a>
+        </td>
+    </tr>
+</table>
+
 ## 벌금
 1500원/일
+
+
 
 

@@ -1,0 +1,31 @@
+#include<iostream>
+
+using namespace std;
+
+int solve(int num, int getsu) {
+
+
+	int i, j,k;
+	long long dp[201][201];
+	for (i = 0; i <= num; ++i) {
+		dp[i][0] = 0;
+	}
+	for (k = 1; k <= getsu; ++k) {
+		dp[0][k] = 1;
+	}
+	int mod = 1000000000;
+	for (i = 1; i <= num; ++i) {
+		for (k = 1; k <= getsu; ++k) {
+			dp[i][k] = (dp[i - 1][k] % mod + dp[i][k - 1] % mod)%mod;
+		}
+	}
+	return dp[num][getsu];
+}
+
+int main(void)
+{
+	int num, getsu;
+	cin >> num >> getsu;
+	cout << solve(num , getsu);
+	return 0;
+}

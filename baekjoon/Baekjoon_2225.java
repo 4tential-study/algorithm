@@ -1,47 +1,30 @@
-#include<iostream>
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
-using namespace std;
-
-int len;
-char pan[2190][2190];
-
-void set_star(int sy, int sx, int now_len) {
-	//cout << sy <<" "<< sx <<" "<< now_len << endl;
-	if (now_len == 1) {
-		pan[sy][sx] = '*';
-		return;
-	}
-	int i, k, next_len = now_len/3;
-	for (i = sy; i < sy + now_len; i+=next_len) {
-		for (k = sx; k < sx + now_len; k += next_len) {
-			if (!(i == sy + next_len && k == sx + next_len)) {
-				set_star(i, k, next_len);
+public class Main {
+	public static void main(String[] args) throws IOException{
+		
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		int N = Integer.parseInt(st.nextToken());
+		int K = Integer.parseInt(st.nextToken());
+		
+		int M[][] = new int[K][N];
+		
+		for(int i=0; i<N; i++) {
+			M[0][i] = 1;
+		}
+		for(int i=0; i<K; i++) {
+			M[i][0] = i+1;
+		}
+		for(int i=1; i<K; i++) {
+			for(int j=1; j<N; j++) {
+				M[i][j] = (M[i-1][j] + M[i][j-1])%1_000_000_000;
 			}
 		}
+		
+		System.out.println(M[K-1][N-1]);
 	}
-}
-
-void solve() {
-
-	int i, k;
-	for (i = 1; i <= len; ++i) {
-		for (k = 1; k <= len; ++k) {
-			pan[i][k] = ' ';
-		}
-	}
-	set_star(1, 1, len);
-	for (i = 1; i <= len; ++i) {
-		for (k = 1; k <= len; ++k) {
-			cout << pan[i][k];
-		}
-		cout << "\n";
-	}
-}
-
-int main(void)
-{
-	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
-	cin >> len;
-	solve();
-	return 0;
 }

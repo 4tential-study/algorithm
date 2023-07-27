@@ -42,7 +42,9 @@ public class boj_10971 {
 
            if(!visited[i] && board[now][i]!=0) {
     		   visited[i] = true;
-    		   bt(start, i, dist+board[now][i]);
+               if (dist + board[now][i] < shortestPath) {
+                   bt(start, i, dist + board[now][i]);
+               }
     		   visited[i] = false;
     	   }
        }

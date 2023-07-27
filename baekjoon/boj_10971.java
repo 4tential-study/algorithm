@@ -39,7 +39,8 @@ public class boj_10971 {
        }
        
        for(int i=1; i < N ; i++) {
-    	   if(!visited[i] && board[now][i]!=0) {
+
+           if(!visited[i] && board[now][i]!=0) {
     		   visited[i] = true;
     		   bt(start, i, dist+board[now][i]);
     		   visited[i] = false;

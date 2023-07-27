@@ -1,0 +1,71 @@
+#include <string>
+#include <vector>
+#include <iostream>
+#include<set>
+using namespace std;
+
+int len;
+vector<int> arr;
+bool check[10];
+set<int> s;
+bool sosu[10000000];
+
+void eras(){    //9999999까지의 소수 모조리 찾기
+    int i,k;
+    for(i=0; i<=9999999; ++i){
+        sosu[i] = true;
+    }
+    sosu[0] = false;
+    sosu[1] = false;
+    for(i=2; i<=9999999; ++i){
+        if(!sosu[i]) continue;
+        for(k=i; k<=9999999; k+=i){
+            sosu[k] = false;
+            //cout<<k<<" ";
+        }
+        sosu[i] = true;
+    }
+}
+
+void backtracking(int now){     //주어진 숫자로 만들 수 있는 모든 수 구하기
+    if(s.count(now)!=0) return;
+    s.insert(now);
+    int i, next;
+    for(i=0; i<len; ++i){
+        if(!check[i]){
+            check[i] = true;
+            next = 10*now+arr[i];
+            backtracking(next);
+            check[i] = false;
+        }
+    }
+}
+
+int solution(string numbers) {
+    int i;
+    for(i=0; i<numbers.length(); ++i){
+        arr.push_back((int)(numbers[i]-'0'));
+    }
+    len = arr.size();
+    for(i=0; i<len; ++i){
+        check[i] = false;
+    }
+    int one;
+    for(i=0; i<arr.size(); ++i){
+        one = arr[i];
+        if(one!=0){
+            check[i] = true;
+            backtracking(one);
+            check[i] = false;
+        }
+        
+    }
+    eras();
+    int now;
+    int answer = 0;
+    for(auto iter = s.begin(); iter!=s.end(); ++iter){  //주어진 숫자로 만든 수들이 소순지 판별
+        now = *iter;
+        if(sosu[now]) answer++;
+    }
+    return answer;
+}

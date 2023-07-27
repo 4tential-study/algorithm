@@ -1,0 +1,53 @@
+#include<iostream>
+
+using namespace std;
+
+int len;
+int road[11][11];
+int answer = 2100000000;	//int max값(2^31-1) 쓰기 귀찮아서 걍 가장 큰 값 근사치 넣은거임 
+bool visit[11];
+
+void backtracking(int start,int now, int num, int hap){
+	if(hap>answer) return;		//이 라인이 없으면 완전탐색인데 이게 있기 때문에 백트래킹이 되는거임 
+	if(num==len){
+		if(road[now][start]==0) return;
+		hap+=road[now][start];
+		answer = min(answer, hap);
+		return;
+	}
+	int i, nexthap;
+	for(i=1; i<=len; ++i){
+		if(!visit[i]&&road[now][i]!=0){
+			visit[i] = true;
+			nexthap = hap+road[now][i];
+			backtracking(start, i,num+1, nexthap);
+			visit[i] = false;
+		}
+	} 
+}
+
+int solve(){
+	int i;
+	for(i=1; i<=len; ++i){
+		visit[i] = false;
+	}
+	for(i=1; i<=len; ++i){
+		visit[i] = true;
+		backtracking(i,i,1,0);	
+		visit[i] = false;
+	}
+	return answer;
+}
+
+int main(void)
+{
+	int i,k;
+	cin>>len;
+	for(i=1; i<=len; ++i){
+		for(k=1; k<=len; ++k){
+			cin>>road[i][k];
+		}
+	}
+	cout<<solve();
+	return 0;
+}

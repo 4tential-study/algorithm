@@ -1,0 +1,57 @@
+import java.util.*;
+
+
+public class Main {
+
+	static int len, dap=0;
+	static List<Integer> sel = new ArrayList<Integer>();
+	static boolean[] visit;
+
+	static boolean panstar(int now) {
+		int i, prev,prev_index;
+		int now_index = sel.size();
+		for(i=0; i<sel.size(); ++i) {
+			prev = sel.get(i);
+			prev_index = i;
+			if(Math.abs(prev_index-now_index)==Math.abs(now-prev)) return false;
+		}
+		return true;
+	}
+	
+	static void backtrack() {
+		if(sel.size()==len) {
+			dap++;
+			/*
+			for(int i=0; i<sel.size(); ++i) {
+				System.out.print(sel.get(i)+ " ");
+			}
+			System.out.println();
+			*/
+			return;
+		}
+		int i;
+		for(i=1; i<=len; ++i) {
+			if(!visit[i]&&panstar(i)) {
+				visit[i] = true;
+				sel.add(i);
+				backtrack();
+				sel.remove(sel.size()-1);
+				visit[i] = false;
+			}
+		}
+	}
+	
+	static int solve() {
+		visit = new boolean[len+1];
+		backtrack();
+		return dap;
+	}
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		Scanner sc = new Scanner(System.in);
+		len = sc.nextInt();
+		System.out.println(solve());
+	}
+
+}

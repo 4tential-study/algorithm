@@ -16,8 +16,12 @@ def solution(numbers):
     decimal_li=[0]*(number+1)
     for i in range(2,number+1):
         decimal=1
+<<<<<<< HEAD
         #test
         for j in range (2,int(i**(1/2))+1):
+=======
+        for j in range(2,int(i**(1/2))+1):
+>>>>>>> 8a00e07 ([07/27]심연진)
             if decimal==0:
                 break
             if i%j==0:

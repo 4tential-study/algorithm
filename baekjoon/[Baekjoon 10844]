@@ -1,0 +1,43 @@
+import java.util.Scanner;
+
+public class Main {
+	static int num;
+	static long[][] dp = new long[101][10];
+ 	
+	public static long solve() {
+		int i,k;
+		for(k=0; k<=9; ++k) {
+			dp[1][k] = 1;
+		}
+		dp[1][0] = 0;
+		long mod = 1000000000;
+		for(i=2; i<=num; ++i) {
+			for(k=0; k<=9; ++k) {
+				if(k==0) {
+					dp[i][k] = (dp[i][k]+dp[i-1][1])%mod;
+				}
+				else if(k==9) {
+					dp[i][k] = (dp[i][k]+dp[i-1][8])%mod;
+				}
+				else {
+					dp[i][k] = (dp[i][k]+(dp[i-1][k-1]+dp[i-1][k+1]))%mod;
+				}
+			}
+		}
+		long dap=0;
+		
+		for(k=0; k<=9; ++k) {
+			dap=(dap+dp[num][k])%mod;
+		}
+		
+		return dap;
+	}
+	
+	public static void main(String[] args){
+		// TODO Auto-generated method stub
+		Scanner sc = new Scanner(System.in);
+		num = sc.nextInt();
+		System.out.print(solve());
+	}
+
+}

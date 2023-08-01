@@ -17,15 +17,17 @@ public class boj_1759 {
 		br = new BufferedReader(new InputStreamReader(System.in));
 		String[] splits= br.readLine().split(" ");
 		
-		 l = Integer.parseInt(splits[0]);
+		l = Integer.parseInt(splits[0]);
 		c = Integer.parseInt(splits[1]);
 		array = new char[c];
 		visited = new boolean[c];
+		
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		for(int i=0 ; i < c ; i++) {
 			array[i]= st.nextToken().charAt(0);
 		
 		}
+		
 		Arrays.sort(array);
 		char[] temp = new char[l];
 		perm(0,0, temp);
@@ -52,7 +54,6 @@ public class boj_1759 {
 				prev = i;
 				perm(prev, level+1, temp);
 				visited[i] = false;
-				
 			}
 		}
 	}

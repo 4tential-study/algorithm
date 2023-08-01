@@ -11,24 +11,35 @@ public class boj_10844 {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		N = Integer.parseInt(br.readLine());
 		
-		dp = new int[N][10];
+		dp = new int[N+1][10];
 		//골라야하는 개수
 		
 		for(int i=0 ; i < 10; i++) {
+			dp[0][i] = 0;
 			dp[1][i]= 1;
 		}
 		
-		for(int i=1 ; i < N  ; i++) {
-			for(int j = 0 ; i <= 9 ; j++) {
-				if (i-2 > 0 ) {
-					dp[i][j] = 2*(dp[i-1][j]) - 1;
-				} else if(i+2 < 9) {
-					
+		for(int i=2 ; i <= N  ; i++) {
+			for(int j = 0 ; j < 10 ; j++) {
+				if (j-i < 0 || j+i-1 > 9 ) {
+					System.out.println("if"+j);
+					dp[i][j] = 2* (dp[i-1][j]) - 1;
+					System.out.println(dp[i][j]);
+				} else {
+					System.out.println("else");
+					dp[i][j] = 2* (dp[i-1][j]);
+					System.out.println(dp[i][j]);
 				}
 				
 			}
 			
 		}
+		int sum = 0;
+		for(int i=0 ; i < 10 ; i++) {
+			System.out.println(dp[N][i]);
+			sum += dp[N][i];
+		}
+		System.out.println(sum);
 		
 		
 	}

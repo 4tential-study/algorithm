@@ -1,0 +1,51 @@
+#include<iostream>
+
+using namespace std;
+
+int num;
+int dp[1001][2];
+void solve() {
+	
+	dp[0][0] = 0;
+	dp[0][1] = 1;
+	int i;
+	for (i = 1; i <= num; ++i) {
+		if (i >= 1&&i<3) {
+			dp[i][0] = dp[i - 1][1];
+			dp[i][1] = dp[i - 1][0];
+		}
+		else if (i == 3) {
+			if (dp[i - 1][1] == 0 || dp[i - 3][1] == 0) {
+				dp[i][0] = 0;
+			}
+			else dp[i][0] = 1;
+			if (dp[i - 1][0] == 1 || dp[i - 3][0] == 1) {
+				dp[i][1] = 1;
+			}
+			else dp[i][1] = 0;
+		}
+		else {
+			if (dp[i - 1][1] == 0 || dp[i - 3][1] == 0 || dp[i - 4][1] == 0) {
+				dp[i][0] = 0;
+			}
+			else dp[i][0] = 1;
+			if (dp[i - 1][0] == 1 || dp[i - 3][0] == 1 || dp[i - 4][0] == 1) {
+				dp[i][1] = 1;
+			}
+			else dp[i][1] = 0;
+		}
+		//cout << i << " : " << dp[i][0] << "," << dp[i][1] << endl;
+	}
+
+	//1cout << dp[num][0];
+	if (dp[num][0] == 0) cout << "SK";
+	else cout << "CY";
+	
+}
+
+int main(void)
+{
+	cin >> num;
+	solve();
+	return 0;
+}

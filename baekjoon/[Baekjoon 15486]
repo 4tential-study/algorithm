@@ -1,0 +1,41 @@
+import java.io.*;
+import java.util.*;
+
+public class Main {
+	static int num;
+	static int[] day;
+	static int[] money;
+	static int[] dp = new int[1500002];
+	
+	public static int solve() {
+		int i, next, maximum=0;
+		for(i=1; i<=num; ++i) {
+			maximum = Math.max(maximum, dp[i]);
+			next = i+day[i];
+			if(next<=num+1) {
+				dp[next] = Math.max(dp[next], money[i]+maximum);
+			}
+		}
+		maximum = 0;
+		for(i=1; i<=num+1; ++i) {
+			maximum = Math.max(maximum, dp[i]);
+		}
+		return maximum;
+	}
+	
+	public static void main(String[] args) throws NumberFormatException, IOException{
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		num  = Integer.parseInt(br.readLine());
+		int i;
+		day = new int[num+1];
+		money = new int[num+1];
+		StringTokenizer st;
+		for(i=1; i<=num; ++i) {
+			st = new StringTokenizer(br.readLine());
+			day[i] = Integer.parseInt(st.nextToken());
+			money[i] = Integer.parseInt(st.nextToken());
+		}
+		System.out.println(solve());
+	}
+
+}

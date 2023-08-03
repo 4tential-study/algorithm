@@ -1,0 +1,63 @@
+#include<iostream>
+#include<vector>
+#include<math.h>
+using namespace std;
+
+int len, max_chicken, dap;
+int pan[51][51];
+vector<pair<int, int>> chicken;  //전체 치킨집 위치(y,x) 저장
+vector<pair<int, int>> home;     //전체 가정집 위치 저장
+vector<pair<int, int>> pos;      //현재 선택한 치킨집 위치들 저장
+
+int getChickenDist(){            //현재 선택한 치킨집들 정보를 바탕으로 최소 치킨거리 리턴
+	if(pos.size()==0) return 2100000000;
+	int y,x,i,home_y, home_x, temp,hap=0;
+	for(i=0; i<home.size(); ++i){
+		home_y = home[i].first;
+		home_x = home[i].second;
+		temp = 2100000000;
+		for(int k=0; k<pos.size(); ++k){
+			y = pos[k].first;
+			x = pos[k].second;
+			temp = min(temp, (abs(home_y-y)+abs(home_x-x)));
+		}
+		hap+=temp;
+	}
+	return hap;
+}
+
+void brute(int prev_index, int chickenjip_getsu){
+	dap = min(getChickenDist(), dap);
+	int nowsize = chicken.size()-1;
+	if(prev_index>=nowsize||chickenjip_getsu>=max_chicken) return;
+	int chicken_dist,i,y,x, now_index = prev_index+1;
+	for(i=now_index; i<chicken.size(); ++i){
+		y = chicken[i].first;
+		x = chicken[i].second;
+		pos.push_back({y,x});
+		brute(i,chickenjip_getsu+1);
+		pos.pop_back();
+	}
+}
+
+int solve(){
+	dap = 2100000000;
+	int i,y,x;
+	brute(-1,0);
+	return dap;	
+}
+
+int main(void)
+{
+	cin>>len>>max_chicken;
+	int i,k;
+	for(i=1; i<=len; ++i){
+		for(k=1; k<=len; ++k){
+			cin>>pan[i][k];
+			if(pan[i][k]==1) home.push_back({i,k});
+			else if(pan[i][k]==2) chicken.push_back({i,k});
+		}
+	}
+	cout<<solve();
+	return 0;
+}

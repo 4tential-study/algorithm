@@ -1,0 +1,28 @@
+#include<iostream>
+
+using namespace std;
+
+int dp[100001][3];	//0은 n줄에 한마리도 안놓기, 1은 n줄에 왼쪽만 놓기, 2는 n줄에 오른쪽만 넣기
+
+int solve(int num) {
+	dp[1][0] = 1;
+	dp[1][1] = 1;
+	dp[1][2] = 1;
+	int i, mod = 9901;
+	for (i = 2; i <= num; ++i) {
+		dp[i][0] = (dp[i - 1][0]%mod + dp[i - 1][1] % mod + dp[i-1][2] % mod) % mod;
+		dp[i][1] = (dp[i - 1][0] % mod + dp[i - 1][2] % mod) % mod;
+		dp[i][2] = (dp[i - 1][0] % mod + dp[i - 1][1] % mod) % mod;
+		//cout << dp[i][0] << " " << dp[i][1] << " " << dp[i][2] << endl;
+	}
+	int dap = (dp[num][0] % mod + dp[num][1] % mod + dp[num][2] % mod) % mod;
+	return dap;
+}
+
+int main(void)
+{
+	int num;
+	cin >>  num;
+	cout << solve(num);
+	return 0;
+}

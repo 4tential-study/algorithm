@@ -1,0 +1,52 @@
+#include<iostream>
+#define fastio ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+
+using namespace std;
+
+int arr[301];
+int dp[301][2];
+int num;
+
+void dp_clear(){
+	for(int i=1; i<=num; ++i){
+		dp[i][0] = -1;
+		dp[i][1] = -1;
+	}
+}
+
+int goStair(int now, int yeonsok){
+	if(now>num) return -2100000000;
+	int ret = dp[now][yeonsok];
+	if(ret!=-1) return ret;
+	ret = arr[now];
+	if(now==num){
+		dp[now][yeonsok] = ret;
+		return ret;
+	}
+	if(yeonsok==0){
+		ret += max(goStair(now+1, yeonsok+1), goStair(now+2, 0));
+	}
+	else if(yeonsok==1){
+		ret += goStair(now+2, 0);
+	}
+	dp[now][yeonsok] = ret;
+	return ret;
+}
+
+int solve(){
+	dp_clear();
+	int dap1 = goStair(1,0);
+	int dap2 = goStair(2,0);
+	int dap = max(dap1, dap2);
+	return dap;
+}
+
+int main(void)
+{
+	cin>>num;
+	for(int i=1; i<=num; ++i){
+		cin>>arr[i];
+	}
+	cout<<solve();
+	return 0;
+}

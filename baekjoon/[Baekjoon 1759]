@@ -1,0 +1,68 @@
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.StringTokenizer;
+
+public class Main {
+	static int num, getsu;
+	static char[] arr;
+	static BufferedWriter bw;
+	static List<Character> l = new ArrayList<>();
+	
+	public static void brute(int prevIndex, int numofja, int numofmo) throws IOException {
+		int namojee = num-l.size();
+		if(namojee<=1&&numofja==0) {
+			return;
+		}
+		if(l.size()==num) {
+			if(numofja<2||numofmo<1) return;
+			for(int i=0; i<num; ++i) {
+				bw.write(String.valueOf(l.get(i)));
+			}
+			bw.write("\n");
+			return;
+		}
+		int index = prevIndex +1;
+		for(int i=index; i<arr.length; ++i) {
+			l.add(arr[i]);
+			if(arr[i]=='a'||arr[i]=='e'||arr[i]=='i'||arr[i]=='o'||arr[i]=='u') {
+				brute(i,numofja, numofmo+1);	
+			}
+			else {
+				brute(i,numofja+1, numofmo);
+			}
+			l.remove(l.size()-1);
+		}
+		
+	}
+	
+	public static void solve() throws IOException {
+		Arrays.sort(arr);
+		/*
+		for(int i=0; i<getsu; ++i) {
+			System.out.print(arr[i]+" ");
+		}
+		*/
+		brute(-1,0,0);
+	}
+	
+	public static void main(String[] args) throws IOException {
+		// TODO Auto-generated method stub
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+	bw = new BufferedWriter(new OutputStreamWriter(System.out));
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		num = Integer.parseInt(st.nextToken());
+		getsu = Integer.parseInt(st.nextToken());
+		arr = new char[getsu];
+		st = new StringTokenizer(br.readLine());
+		String strAlpha;
+		for(int i=0; i<getsu; ++i) {
+			strAlpha = st.nextToken();
+			arr[i] = strAlpha.charAt(0);
+		}
+		solve();
+		bw.flush();
+	}
+
+}

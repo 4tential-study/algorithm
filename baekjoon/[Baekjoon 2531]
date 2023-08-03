@@ -1,0 +1,56 @@
+#include<iostream>
+#include<map>
+#include<math.h>
+#define fastio ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+using namespace std;
+
+int plate, chobab, yeonsok, coupon;
+int rotate[30001];
+
+int solve(){
+	map<int,int> m;
+	int i;
+	m.insert({coupon,1});
+	for(i=0; i<yeonsok; ++i){
+		if(m.count(rotate[i])==0) m.insert({rotate[i],1});
+		else m[rotate[i]]++;
+	}
+
+	int dap = m.size();
+	if(plate==yeonsok) return dap;
+	int first=1, last=yeonsok, m_size;
+	if(m[rotate[0]]==1){
+		//cout<<rotate[0]<<" "<<m[rotate[0]]<<endl;
+		m.erase(rotate[0]);	
+	}
+	else {
+		m[rotate[0]]--;	
+	}
+	if(m.count(rotate[last])==0) m.insert({rotate[last],1});
+	else m[rotate[last]]++;
+	while(first!=0){    //맵에 제일 앞에거 하나넣고 제일 뒤에 하나 빼고를 반복함
+		m_size = m.size();
+		dap = max(dap, m_size);
+		if(m[rotate[first]]==1) m.erase(rotate[first]);
+		else m[rotate[first]]--;
+		first++;
+		if(first==plate) first=0;
+		last++;
+		if(last==plate) last=0;
+		if(m.count(rotate[last])==0) m.insert({rotate[last],1});
+		else m[rotate[last]]++;
+	}
+	return dap;
+	
+}
+
+int main(void){
+	fastio;
+	cin>>plate>>chobab>>yeonsok>>coupon;
+	int i;
+	for(i=0; i<plate; ++i){
+		cin>>rotate[i];
+	}
+	cout<<solve();
+	return 0;
+}

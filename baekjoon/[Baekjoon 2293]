@@ -1,0 +1,43 @@
+#include<iostream>
+#include<algorithm>
+#define fastio ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+using namespace std;
+
+int price, coin;
+int arr[101];
+int dp[10001];
+
+
+
+int solve() {
+	int dap = 0;
+	sort(arr, arr + coin);
+	int i;
+	for (i = 0; i <= price; ++i) {
+		dp[i] = 0;
+	}
+	int now,k;
+	dp[0] = 1;
+	for (i = 0; i < coin; ++i) {
+		now = arr[i];
+		for (k = now; k <= price; ++k) {
+			dp[k] += dp[k - now];
+		}
+	}
+	dap = dp[price];
+
+	return dap;
+}
+
+int main(void)
+{
+	fastio;
+	cin >> coin;
+	cin >> price;
+	int i, don, getsu;
+	for (i = 0; i < coin; ++i) {
+		cin >> arr[i];
+	}
+	cout << solve();
+	return 0;
+}

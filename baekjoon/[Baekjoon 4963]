@@ -1,0 +1,59 @@
+#include<iostream>
+#define fastio ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+using namespace std;
+
+int sero, garo;
+int pan[51][51];
+int visit[51][51];
+int dy[8] =  {-1,-1,-1,0,1,1, 1, 0};
+int dx[8] =  {-1, 0, 1,1,1,0,-1,-1};
+//int dy[4] = {1,0,-1,0};
+//int dx[4] = {0,1,0,-1};
+
+
+void dfs(int y, int x) {
+	visit[y][x] = true;
+	int i, ny, nx;
+	for (i = 0; i < 8; ++i) {
+		ny = y + dy[i];
+		nx = x + dx[i];
+		if (ny >= 1 && ny <= sero && nx >= 1 && nx <= garo) {
+			if(!visit[ny][nx] && pan[ny][nx] == 1) dfs(ny, nx);
+		}
+	}
+}
+
+int solve() {
+	int i, k, count=0;
+	for (i = 1; i <= sero; ++i) {
+		for (k = 1; k <= garo; ++k) {
+			visit[i][k] = false;
+		}
+	}
+	for (i = 1; i <= sero; ++i) {
+		for (k = 1; k <= garo; ++k) {
+			if (!visit[i][k]&&pan[i][k]==1) {
+				count++;
+				dfs(i, k);
+			}
+		}
+	}
+	return count;
+}
+
+int main(void)
+{
+	fastio;
+	int i, k;
+	while (1) {
+		cin >> garo >> sero;
+		if (sero == 0 && garo == 0) break;
+		for (i = 1; i <= sero; ++i) {
+			for (k = 1; k <= garo; ++k) {
+				cin >> pan[i][k];
+			}
+		}
+		cout << solve() << "\n";
+	}
+	return 0;
+}

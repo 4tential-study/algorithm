@@ -1,0 +1,68 @@
+#include<iostream>
+#define fastio ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+using namespace std;
+
+int price, coin;
+pair<int, int> v[101];
+int dp[10001][101];
+
+void dpClear() {
+	int i, k;
+	
+	for (i = 0; i <= 10000; ++i) {
+		for (k = 0; k <= 100; ++k) {
+			dp[i][k] = -1;
+		}
+	}
+	/*
+	for (k = 0; k <= 100; ++k) {
+		dp[0][k] = 1;
+	}
+	*/
+}
+
+int getDp(int hap, int index) {
+	//cout << hap << " " << index << endl;
+	if (index == 0) {
+		if (hap == 0) return 1;
+		return 0;
+	}
+	if (hap == 0) {
+		dp[hap][index] = 1;
+		return 1;
+	}
+	int ret = dp[hap][index];
+	if (ret != -1) return ret;
+	int i;
+	int nowcoin = v[index].first;
+	int getsu = v[index].second;
+	int nexthap = hap;
+	ret = 0;
+	for (i = 0; i <= getsu; ++i) {
+		nexthap = hap-(i*nowcoin);
+		if (nexthap < 0) break;
+		ret += getDp(nexthap, index - 1);
+	}
+	dp[hap][index] = ret;
+	return ret;
+}
+
+int solve() {
+	dpClear();
+	int dap = getDp(price, coin);	//price원을 coin개까지 써서 만들 수 있는 경우의 수
+	return dap;
+}
+
+int main(void)
+{
+	fastio;
+	cin >> price;
+	cin >> coin;
+	int i, don, getsu;
+	for (i = 1; i <= coin; ++i) {
+		cin >> don >> getsu;
+		v[i] = { don, getsu };
+	}
+	cout << solve();
+	return 0;
+}

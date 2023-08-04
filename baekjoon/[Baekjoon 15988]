@@ -1,0 +1,26 @@
+#include<iostream>
+#define fastio ios::sync_with_stdio(false);cin.tie(NULL);cout.tie(NULL);
+using namespace std;
+
+long long dp[1000001];
+long long mod = 1000000009;
+void init() {
+	dp[1] = 1;
+	dp[2] = 2;
+	dp[3] = 4;
+	int i;
+	for (i = 4; i <= 1000000; ++i) {
+		dp[i] = (dp[i - 1] + dp[i - 2] + dp[i - 3])%mod;
+	}
+}
+
+int main(void)
+{
+	int num,i, now;
+	cin >> num;
+	init();
+	for (i = 0; i < num; ++i) {
+		cin >> now;
+		cout << dp[now] << "\n";
+	}
+}

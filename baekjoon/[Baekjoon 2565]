@@ -1,0 +1,47 @@
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+
+int num;
+int temp[501];
+int dp[101];
+vector<int> v;
+
+int solve() {
+	int i, k, maximum, del = -1;
+	dp[0] = 1;
+	for (i = 1; i < v.size(); ++i) {
+		maximum = 0;
+		for (k = i - 1; k >= 0; --k) {
+			if(v[k]<v[i]) maximum = max(maximum, dp[k]);
+		}
+		dp[i] = maximum+1;
+		//cout << dp[i] << endl;
+		del = max(del, dp[i]);
+	}
+	int dap = num - del;
+	return dap;
+}
+
+int main(void)
+{
+	cin >> num;
+	int i;
+	for (i = 0; i <= 500; ++i) {
+		temp[i] = 0;
+	}
+	int index, height;
+	for (i = 0; i < num; ++i) {
+		cin >> index >> height;
+		temp[index] = height;
+	}
+	for (i = 0; i <= 500; ++i) {
+		if (temp[i] != 0) {
+			v.push_back(temp[i]);
+		}
+	}
+	
+	cout << solve();
+	return 0;
+}

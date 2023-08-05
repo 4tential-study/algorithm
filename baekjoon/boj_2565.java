@@ -29,7 +29,7 @@ public class boj_2565 {
 		});
 		
 //		int prev = 501;
-		int count = 0;
+		int answer = 1;
 		for (int k = 0; k < n; k++){
 			length[k] = 1;
 		    for (int i = 0; i < k; i++){
@@ -37,12 +37,9 @@ public class boj_2565 {
 		            length[k] = Math.max(length[k], length[i] + 1);
 		        }
 		    }
+			answer = Math.max(length[k], answer);
 		}
-//		for(int i = lines.size() ; i < 0 ; i--) {
-//			if(lines.get(i)[1] < prev) count++;
-//			prev = lines.get(i)[1];
-//		}
-	
-		System.out.println(length[n-1]);
+
+		System.out.println(n-answer);
 	}
 }

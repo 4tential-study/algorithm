@@ -9,30 +9,39 @@ public class boj_3067 {
 	static int t ;
 	static int n;
 	static int[] coins;
-	static int[] dp;
+	static int[][] dp;
 	static int m;
 	
 	public static void main(String[] args) throws IOException {
 		br = new BufferedReader(new InputStreamReader(System.in));
+		
 		int t = Integer.parseInt(br.readLine());
-		int n = Integer.parseInt(br.readLine());
-		coins = new int[n];
-		st = new StringTokenizer(br.readLine());
-		for(int i=0 ; i < n ; i++) {
-			int x = Integer.parseInt(st.nextToken());
-			coins[i] = x;
-		}
-		dp = new int[10001];
-		dp[0] = 1;
-		
-		for(int i=1 ; i <= 10000 ; i++) {
-			for(int j= 0 ; j < n ;j++) {
-				if(i-coins[j] >=0) dp[i] += dp[i-coins[j]];
+		for(int x =0 ; x < t ;x ++) {
+			int n = Integer.parseInt(br.readLine());
+			coins = new int[n];
+			dp = new int[10001][n];
+			st = new StringTokenizer(br.readLine());
+			for(int i=0 ; i < n ; i++) {
+				int xx = Integer.parseInt(st.nextToken());
+				coins[i] = xx;
+				dp[coins[i]][i] = 1;
 			}
+			
+			
+			
+			for(int i=coins[0] ; i <= 10000 ; i++) {
+				for(int j= 0 ; j < n ;j++) {
+					if(i-j < 0) continue; 
+					dp[i][j] += dp[i-j][j];
+				}
+			}
+			int m = Integer.parseInt(br.readLine());
+			int ans = 0;
+			for(int z = 0 ; z < n ; z ++) {
+				ans += dp[m][z];
+			}
+			
+			System.out.println(ans);
 		}
-		int m = Integer.parseInt(br.readLine());
-		System.out.println(dp[m]);
-		
-		
 	}
 }

@@ -1,0 +1,44 @@
+#include<iostream>
+#define fastio ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+using namespace std;
+
+int numofcoin, price;
+int coins[21];
+int dp[10001];
+
+void dpClear() {
+	int i, k;
+	for (k = 0; k <= price; ++k) {
+		dp[k] = 0;
+	}
+	dp[0] = 1;
+}
+
+int solve() {
+	dpClear();
+	int i, k, now;
+	for (i = 1; i <= numofcoin; ++i) {
+		now = coins[i];
+		for (k = now; k <= price; ++k) {
+			dp[k] = dp[k] + dp[k - now];
+		}
+	}
+	return dp[price];
+}
+
+int main(void)
+{
+	fastio;
+	int testcase;
+	cin >> testcase;
+	int t,i;
+	for (t = 0; t < testcase; ++t) {
+		cin >> numofcoin;
+		for (i = 1; i <= numofcoin; ++i) {
+			cin >> coins[i];
+		}
+		cin >> price;
+		cout << solve() << "\n";
+	}
+	return 0;
+}

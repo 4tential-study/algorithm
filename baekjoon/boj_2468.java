@@ -13,7 +13,6 @@ public class boj_2468 {
 	static int[] dy = new int[] {-1, 1, 0, 0};
 	
 	public static void main(String[] args) throws IOException{
-		// TODO Auto-generated method stub
 		br = new BufferedReader(new InputStreamReader(System.in));
 		n = Integer.parseInt(br.readLine());
 		board = new int[n][n];
@@ -35,7 +34,7 @@ public class boj_2468 {
 
 			for(int i=0 ; i < n ; i++) {
 				for(int j=0 ; j < n ; j++) {
-					if(board[i][j]> std && !visited[i][j]) {
+					if(board[i][j] > std && !visited[i][j]) {
 						dfs(new int[]{i,j}, std);
 						answer++;
 					}					
@@ -43,10 +42,7 @@ public class boj_2468 {
 			}
 			maxA = Math.max(maxA, answer);
 		}
-		
 		System.out.println(maxA);
-		
-		
 	}
 	
 	public static void dfs(int[] start, int std) {
@@ -54,46 +50,18 @@ public class boj_2468 {
 		
 		stack.add(start);
 		while(!stack.isEmpty()) {
-			int[] pop =stack.pop();
+			int[] pop = stack.pop();
 			int y = pop[0];
 			int x = pop[1];
 			visited[y][x] = true;
 			for(int i=0 ; i < 4 ; i++) {
 				int ay = y + dy[i];
 				int ax = x + dx[i];
-				if(ax >= 0 && ax < n && ay >=0 && ay < n  && std < board[ay][ax]&& !visited[ay][ax]) {
+				if(ax >= 0 && ax < n && ay >= 0 && ay < n  && std < board[ay][ax] && !visited[ay][ax]) {
 					stack.add(new int[] {ay,ax});
 					visited[ay][ax] = true;
 				}
 			}
 		}	
 	}
-	
-//	public static int bfs(int[] start, int std ) {
-//		Queue<int[] > queue = new LinkedList<>();
-//		
-//		queue.add(start);
-//		int ans =0;
-//		while(!queue.isEmpty()) {
-//			int[] pop = queue.poll();
-//			int y = pop[0];
-//			int x = pop[1];
-//			
-//			for(int i=0 ; i < 4 ; i++) {
-//				int ay = y + dy[i];
-//				int ax = x + dx[i];
-//				if(ax >=0 && ax < n && ay >=0 && ay < n && std <= board[ay][ax] && !visited[ay][ax]) {
-//					queue.add(new int[] {ay,ax});
-//					visited[ay][ax] = true;
-//					
-//				}
-//				
-//			}
-//		}
-//		System.out.println(ans);
-//		return ans;
-//	}
-	
-	
-
 }

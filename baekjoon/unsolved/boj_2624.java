@@ -18,16 +18,14 @@ public class boj_2624 {
 		int n = Integer.parseInt(br.readLine());
 		int m = Integer.parseInt(br.readLine()); //동전가짓수
 		coins = new Coin[m];
-		dp = new int[m+1][n+1];
-		for(int i=1 ; i <= n  ; i++) {
+		dp = new int[m + 1][n + 1];
+		for (int i = 1; i <= n; i++) {
 			dp[1][i] = 1;
-			
 		}
-		
 		
 		for(int i=0 ; i < m ; i++) {
 			st = new StringTokenizer(br.readLine());
-			
+
 			int price = Integer.parseInt(st.nextToken());
 			int cnt = Integer.parseInt(st.nextToken());
 			Coin coin  = new Coin(price , cnt);

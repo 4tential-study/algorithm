@@ -9,7 +9,7 @@ public class boj_3067 {
 	static int t ;
 	static int n;
 	static int[] coins;
-	static int[][] dp;
+	static int[] dp;
 	static int m;
 	
 	public static void main(String[] args) throws IOException {
@@ -18,30 +18,29 @@ public class boj_3067 {
 		int t = Integer.parseInt(br.readLine());
 		for(int x =0 ; x < t ;x ++) {
 			int n = Integer.parseInt(br.readLine());
-			coins = new int[n];
-			dp = new int[10001][n];
+			coins = new int[n+1];
 			st = new StringTokenizer(br.readLine());
-			for(int i=0 ; i < n ; i++) {
+			for(int i=1 ; i <= n ; i++) {
 				int xx = Integer.parseInt(st.nextToken());
 				coins[i] = xx;
-				dp[coins[i]][i] = 1;
+//				dp[coins[i]] = 1;
 			}
+			dp = new int[10001];
+			dp[0] = 1;
 			
 			
+			int m = Integer.parseInt(br.readLine());
+
 			
-			for(int i=coins[0] ; i <= 10000 ; i++) {
-				for(int j= 0 ; j < n ;j++) {
-					if(i-j < 0) continue; 
-					dp[i][j] += dp[i-j][j];
+			
+			for(int j=1 ; j <= n ; j++) {
+				int coin = coins[j];
+				for(int i=coin ; i <= m ; i++) {
+					dp[i] += dp[i-coins[j]];
 				}
 			}
-			int m = Integer.parseInt(br.readLine());
-			int ans = 0;
-			for(int z = 0 ; z < n ; z ++) {
-				ans += dp[m][z];
-			}
 			
-			System.out.println(ans);
+			System.out.println(dp[m]);
 		}
 	}
 }

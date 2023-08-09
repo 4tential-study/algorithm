@@ -1,0 +1,70 @@
+#include<iostream>
+#include<algorithm>
+using namespace std;
+
+int len;
+int pan[101][101];
+int dy[4] = {1,0,-1,0};
+int dx[4] = {0,1,0,-1};
+bool visit[101][101];
+
+void visitClear(){
+	int i,k;
+	for(i=1; i<=len; ++i){
+		for(k=1; k<=len; ++k){
+			visit[i][k] = false;
+		}
+	}
+}
+
+void dfs(int y, int x, int h){
+	visit[y][x] = true;
+	int i, ny, nx;
+	for(i=0; i<4; ++i){
+		ny = y+dy[i];
+		nx = x+dx[i];
+		if(ny>=1&&ny<=len&&nx>=1&&nx<=len){
+			if(!visit[ny][nx]&&pan[ny][nx]>h){
+				dfs(ny,nx,h);
+			}
+		}
+	}
+} 
+
+int solve(){
+	
+	int height=1,i,k, count, dap=1;
+	while(1){
+		visitClear();
+		count = 0;
+		for(i=1; i<=len; ++i){
+			for(k=1; k<=len; ++k){
+				if(!visit[i][k]&&pan[i][k]>height){
+					count++;
+					dfs(i,k,height);
+				}
+			}
+		}	
+		if(count==0) break;	
+		dap = max(dap, count);
+		height++;
+	}
+	return dap;
+}
+
+void input(){
+	cin>>len;
+	int i,k;
+	for(i=1; i<=len; ++i){
+		for(k=1; k<=len; ++k){
+			cin>>pan[i][k];
+		}
+	}
+}
+
+int main(void)
+{
+	input();
+	cout<<solve();
+	return 0;
+}

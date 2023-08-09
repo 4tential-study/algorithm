@@ -1,0 +1,24 @@
+#include<iostream>
+
+using namespace std;
+
+long long solve(int num){
+	if(num==1) return 1;
+	if(num==2) return 2;
+	long long zeonzeon=1, zeon = 2;
+	long long dap, mod = 10007;
+	for(int i=3; i<=num; ++i){
+		dap = (zeon+zeonzeon)%mod;
+		zeonzeon = zeon;
+		zeon = dap;
+	}
+	return dap;
+}
+
+int main(void)
+{
+	int num;
+	cin>>num;
+	cout<<solve(num);
+	return 0;
+}

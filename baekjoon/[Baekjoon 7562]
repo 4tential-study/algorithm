@@ -1,0 +1,68 @@
+#include<iostream>
+#include<queue>
+#define fastio ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+using namespace std;
+
+struct tri {
+	int y, x, count;
+};
+
+int len;
+int sy, sx, ey, ex;
+bool visit[301][301];
+int dy[8] = { -2,-2,-1, 1,2, 2, 1,-1 };
+int dx[8] = { -1, 1, 2, 2,1,-1,-2,-2 };
+
+void visitClear() {
+	int i, k;
+	for (i = 1; i <= len; ++i) {
+		for (k = 1; k <= len; ++k) {
+			visit[i][k] = false;
+		}
+	}
+}
+
+int bfs() {
+	visitClear();
+	queue<tri> q;
+	q.push({ sy,sx,0 });
+	visit[sy][sx] = true;
+	int y, x, count, ny, nx;
+	while (!q.empty()) {
+		y = q.front().y;
+		x = q.front().x;
+		count = q.front().count;
+		q.pop();
+		if (y == ey && x == ex) return count;
+		for (int i = 0; i < 8; ++i) {
+			ny = y + dy[i];
+			nx = x + dx[i];
+			if (ny >= 1 && ny <= len && nx >= 1 && nx <= len) {
+				if (!visit[ny][nx]) {
+					visit[ny][nx] = true;
+					q.push({ ny, nx, count + 1 });
+				}
+			}
+		}
+	}
+}
+
+int solve() {
+	int ans = bfs();
+	return ans;
+}
+
+int main(void)
+{
+	fastio;
+	int testcase, t;
+	cin >> testcase;
+	for (t = 0; t < testcase; ++t) {
+		cin >> len;
+		cin >> sy >> sx;
+		cin >> ey >> ex;
+		sy++; sx++; ey++; ex++;
+		cout << solve() << "\n";
+	}
+	return 0;
+}

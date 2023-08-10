@@ -1,0 +1,54 @@
+import java.util.*;
+
+class Pair{
+    String now;
+    int count;
+    Pair(String _now, int _count){
+        now = _now;
+        count = _count;
+    }
+}
+
+class Solution {
+    boolean[] check;
+    
+    public boolean panstar(String a, String b){
+        int i, count=0;
+        for(i=0; i<a.length(); ++i){
+            if(a.charAt(i)!=b.charAt(i)){
+                count++;
+                if(count>=2) return false;
+            }
+        }
+        if(count==1) return true;
+        return false;
+    }
+    
+    public int bfs(String begin, String end, String[] words){
+        int len = words.length;
+       check = new boolean[len];
+        Queue<Pair> q = new LinkedList<>();
+        q.add(new Pair(begin, 0));
+        String now;
+        int count,i;
+        while(!q.isEmpty()){
+            now = q.peek().now;
+            count = q.peek().count;
+            q.remove();
+            if(now.equals(end)) return count;
+            for(i=0; i<len; ++i){
+                if(!check[i]&&panstar(now, words[i])){
+                    check[i] = true;
+                    q.add(new Pair(words[i], count+1));
+                }
+            }
+        }
+        return 0;
+    }
+    
+    public int solution(String begin, String target, String[] words) {
+        int answer = 0;
+        answer = bfs(begin, target, words);
+        return answer;
+    }
+}

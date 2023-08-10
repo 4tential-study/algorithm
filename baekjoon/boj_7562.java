@@ -3,7 +3,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.LinkedList;
 import java.util.Queue;
-
+// [Baekjoon.7562] 나이트의 이동
 public class boj_7562 {
     static BufferedReader br;
     static int[][] board;

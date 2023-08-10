@@ -14,7 +14,7 @@ public class boj_7576 {
     static int y;
 
     static int[] dy  = new int[]{0,-1,0,1};
-    static int[] dx = new int[]{-1,0,-1,0};
+    static int[] dx = new int[]{-1,0,1,0};
 
     public static void main(String[] args) throws IOException {
         br = new BufferedReader(new InputStreamReader(System.in));
@@ -29,7 +29,6 @@ public class boj_7576 {
             for(int j=0 ; j < x ; j++){
                 board[i][j]= Integer.parseInt(st.nextToken());
                 if(board[i][j]== 1) {
-                    System.out.println(i+" "+j);
                     start.add(new int[]{i,j});
                 }
             }
@@ -48,6 +47,9 @@ public class boj_7576 {
         }
 
         bfs(start);
+        for(int[] each : start){
+            board[each[0]][each[1]] = 1;
+        }
         int max = 0 ;
         for(int i=0 ; i < y ; i++){
             for(int j=0 ; j < x ; j ++){
@@ -68,6 +70,7 @@ public class boj_7576 {
         for(int[] each : start){
             queue.add(each);
             visited[each[0]][each[1]] = true;
+            board[each[0]][each[1]] = 0;
         }
         while(!queue.isEmpty()){
             int[] poll = queue.poll();
@@ -75,12 +78,9 @@ public class boj_7576 {
                 int ay = poll[0] + dy[i];
                 int ax = poll[1] + dx[i];
                 if( ax>=0 && ax < x && ay >=0 && ay < y && board[ay][ax]==0 &&!visited[ay][ax]){
-                    System.out.println(ay+" "+ax);
                     queue.add(new int[]{ay,ax});
                     visited[ay][ax] = true;
-                    System.out.println(board[poll[0]][poll[1]]);
                     board[ay][ax] = board[poll[0]][poll[1]]+1;
-
                 }
             }
         }

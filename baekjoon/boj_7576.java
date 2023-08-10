@@ -23,12 +23,13 @@ public class boj_7576 {
         y = Integer.parseInt(s[1]);
         ArrayList<int[]> start = new ArrayList<>();
         board = new int[y][x];
-
+        visited = new boolean[y][x];
         for(int i=0 ; i < y ; i++){
             st = new StringTokenizer(br.readLine());
             for(int j=0 ; j < x ; j++){
                 board[i][j]= Integer.parseInt(st.nextToken());
                 if(board[i][j]== 1) {
+                    System.out.println(i+" "+j);
                     start.add(new int[]{i,j});
                 }
             }
@@ -47,7 +48,19 @@ public class boj_7576 {
         }
 
         bfs(start);
-
+        int max = 0 ;
+        for(int i=0 ; i < y ; i++){
+            for(int j=0 ; j < x ; j ++){
+                if(board[i][j] == 0 ) {
+                    System.out.println(-1);
+                    return;
+                } else {
+                    max = Math.max(max, board[i][j]);
+                }
+            }
+        }
+        System.out.println(max);
+        return;
     }
 
     public static void bfs(ArrayList<int[]> start){
@@ -62,9 +75,12 @@ public class boj_7576 {
                 int ay = poll[0] + dy[i];
                 int ax = poll[1] + dx[i];
                 if( ax>=0 && ax < x && ay >=0 && ay < y && board[ay][ax]==0 &&!visited[ay][ax]){
+                    System.out.println(ay+" "+ax);
                     queue.add(new int[]{ay,ax});
                     visited[ay][ax] = true;
-                    board[ay][ax] = 1;
+                    System.out.println(board[poll[0]][poll[1]]);
+                    board[ay][ax] = board[poll[0]][poll[1]]+1;
+
                 }
             }
         }

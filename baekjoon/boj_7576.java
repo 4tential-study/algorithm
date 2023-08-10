@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.*;
 import java.util.StringTokenizer;
 
 public class boj_7576 {
@@ -27,21 +28,22 @@ public class boj_7576 {
         }
 
         int zero = 0;
-        boolean bool = false;
         for(int i=0 ; i < y ; i++){
             for(int j=0 ; j < x ; j++){
                 if( board[i][j] == 0 ) zero++;
-                if(board[i][j] == )
             }
         }
 
-        if(zero==0) {
-            System.out.println(-1);
+        if( zero==0 ) {
+            System.out.println(0);
+            return;
         }
+
+        bfs(new int[]{0,0});
 
     }
 
-    public static void bfs(){
-
+    public static void bfs(int[] start){
+        Queue<int[]> queue = new Queue<>();
     }
 }

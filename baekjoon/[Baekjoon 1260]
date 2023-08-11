@@ -1,0 +1,73 @@
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#include<queue>
+#define fastio ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+using namespace std;
+
+int numofver, numofedge, start;
+vector<int> graph[1001];
+bool visit[1001];
+
+void visitClear(){
+	int i;
+	for(i=1; i<=numofver; ++i){
+		visit[i] = false;
+	}
+}
+
+void bfs(){
+	queue<int> q;
+	q.push(start);
+	visit[start] = true;
+	int i,now, next;
+	while(!q.empty()){
+		now= q.front();
+		cout<<now<<" ";
+		q.pop();
+		for(i=0; i<graph[now].size(); ++i){
+			next = graph[now][i];
+			if(!visit[next]){
+				visit[next] = true;
+				q.push(next);
+			}
+		}
+	}
+}
+
+void dfs(int now){
+	cout<<now<<" ";
+	visit[now] = true;
+	int i, next;
+	for(i=0; i<graph[now].size(); ++i){
+		next = graph[now][i];
+		if(!visit[next]){
+			dfs(next);
+		}
+	}
+}
+
+void solve(){
+	int i;
+	for(i=1; i<=numofver; ++i){
+		sort(graph[i].begin(), graph[i].end());
+	}
+	visitClear();
+	dfs(start);
+	cout<<"\n";
+	visitClear();
+	bfs();
+}
+
+int main(void)
+{
+	fastio;
+	cin>>numofver>>numofedge>>start;
+	int i, a,b;
+	for(i=0; i<numofedge; ++i){
+		cin>>a>>b;
+		graph[a].push_back(b);
+		graph[b].push_back(a);
+	}
+	solve();
+}

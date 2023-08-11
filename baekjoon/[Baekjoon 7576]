@@ -1,0 +1,74 @@
+#include<iostream>
+#include<queue>
+
+using namespace std;
+
+int dx[4] = {1, 0, -1, 0};
+int dy[4] = {0, 1, 0, -1};
+
+
+int garo, sero;
+int arr[1001][1001];
+
+bool isitinbox(int y, int x){
+	if(y>=1&&y<=sero&&x>=1&&x<=garo) return true;
+	return false;
+}
+
+void bfs(){
+	queue<pair<int, int> > q;
+	int i,k;
+	for(i=1; i<=sero; ++i){
+		for(k=1; k<=garo; ++k){
+			if(arr[i][k]==1) q.push({i,k});
+		}
+	}
+	int nowx, nowy, nextx, nexty;
+	while(!q.empty()){
+		nowy = (q.front()).first;
+		nowx = (q.front()).second;
+		q.pop();
+		//cout<<nowy<<" "<<nowx<<"\n";
+		for(i=0; i<4; ++i){
+			nextx = nowx+dx[i];
+			nexty = nowy+dy[i];
+			if(isitinbox(nexty, nextx)){
+				if(arr[nexty][nextx]==0){
+					arr[nexty][nextx]=arr[nowy][nowx]+1;
+					q.push({nexty, nextx});
+				}
+			}
+		}
+			
+	}	
+}
+
+int solve(){
+	int biggest=0;
+	bfs();
+	int i,k;
+	for(i=1; i<=sero; ++i){
+		for(k=1; k<=garo; ++k){
+			if(arr[i][k]==0){
+				return -1;
+			}
+			if(biggest<arr[i][k]) biggest = arr[i][k];
+		}
+	}
+	return biggest-1;
+}
+
+int main(void)
+{
+	cin>>garo>>sero;
+	int i,k;
+	for(i=1; i<=sero; ++i){
+		for(k=1; k<=garo; ++k){
+			cin>>arr[i][k];
+		}
+	}
+	cout<<solve();
+	return 0;
+	
+	
+}

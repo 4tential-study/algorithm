@@ -1,0 +1,79 @@
+#include<iostream>
+#include<queue>
+using namespace std;
+
+struct tomato{
+	int hpos,ypos,xpos,day;
+};
+int box[101][101][101];
+int dh[6]={1,0,0,-1,0,0};
+int dy[6]={0,1,0,0,-1,0};
+int dx[6]={0,0,1,0,0,-1};
+int nopee,sero,garo;
+
+int alltomato(){
+	int i,j,k,maximum=0;
+	for(i=1;i<=nopee;++i){
+		for(j=1;j<=sero;++j){
+			for(k=1;k<=garo;++k){
+				if(box[i][j][k]==0) return -1;
+				maximum=max(maximum,box[i][j][k]);
+			}
+		}
+	}
+	return maximum-1;
+}
+
+bool panstar(int h,int y,int x){
+	if(h>=1&&h<=nopee&&y>=1&&y<=sero&&x>=1&&x<=garo)
+		return true;
+	return false;
+}
+
+void bfs(){
+	int i,j,k,nowh,nowx,nowy,nexth,nexty,nextx;
+	int today;
+	queue<tomato>q;
+	for(i=1;i<=nopee;++i){
+		for(j=1;j<=sero;++j){
+			for(k=1;k<=garo;++k){
+				if(box[i][j][k]==1)
+					q.push({i,j,k,1});
+			}
+		}
+	}
+	while(!q.empty()){
+		nowh=(q.front()).hpos;
+		nowy=(q.front()).ypos;
+		nowx=(q.front()).xpos;
+		today=(q.front()).day;
+		q.pop();
+		for(i=0;i<6;++i){
+			nexth=nowh+dh[i];
+			nexty=nowy+dy[i];
+			nextx=nowx+dx[i];
+			if(panstar(nexth,nexty,nextx)){
+				if(box[nexth][nexty][nextx]==0){
+					box[nexth][nexty][nextx]=today+1;
+					q.push({nexth,nexty,nextx,today+1});
+				}
+			}
+		}
+		
+	}
+}
+
+int main(void)
+{
+	int i,j,k;
+	cin>>garo>>sero>>nopee;
+	for(i=1;i<=nopee;++i){
+		for(j=1;j<=sero;++j){
+			for(k=1;k<=garo;++k){
+				cin>>box[i][j][k];
+			}
+		}
+	}
+	bfs();
+	cout<<alltomato();
+}

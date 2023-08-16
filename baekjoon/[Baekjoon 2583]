@@ -1,0 +1,82 @@
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#define fastio ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+using namespace std;
+
+int board[101][101];
+bool visit[101][101];
+int sero, garo;
+int dy[4] = { 1,0,-1,0 };
+int dx[4] = { 0,1,0,-1 };
+
+void input() {
+	int getsu;
+	cin >> sero >> garo >> getsu;
+	int t,i,k, sy, sx;	//왼쪽아래
+	int ey, ex;		//오른쪽 위
+	for (i = 1; i <= sero; ++i) {
+		for (k = 1; k <= garo; ++k) {
+			board[i][k] = 0;
+		}
+	}
+	for (t = 0; t < getsu; ++t) {
+		cin >> sx >> sy >> ex >> ey;
+		sx++; sy++; ex; ex;
+		for (i = sy; i <= ey; ++i) {
+			for (k = sx; k <= ex; ++k) {
+				board[i][k] = 1;
+			}
+		}
+	}
+}
+
+void visitClear() {
+	int i, k;
+	for (i = 1; i <= sero; ++i) {
+		for (k = 1; k <= garo; ++k) {
+			visit[i][k] = false;
+		}
+	}
+}
+
+int dfs(int y, int x) {
+	visit[y][x] = true;
+	int ret = 1, i, ny, nx;
+	for (i = 0; i < 4; ++i) {
+		ny = y + dy[i];
+		nx = x + dx[i];
+		if (ny >= 1 && ny <= sero && nx >= 1 && nx <= garo) {
+			if (!visit[ny][nx] && board[ny][nx] == 0) {
+				ret += dfs(ny, nx);
+			}
+		}
+	}
+	return ret;
+}
+
+void solve() {
+	int i, k, count=0;
+	vector<int> v;
+	for (i = 1; i <= sero; ++i) {
+		for (k = 1; k <= garo; ++k) {
+			if (!visit[i][k]&&board[i][k]==0) {
+				count++;
+				v.push_back(dfs(i, k));
+			}
+		}
+	}
+	cout << count << "\n";
+	sort(v.begin(), v.end());
+	for (i = 0; i < v.size(); ++i) {
+		cout << v[i] << " ";
+	}
+}
+
+int main(void)
+{
+	fastio;
+	input();
+	solve();
+	return 0;
+}

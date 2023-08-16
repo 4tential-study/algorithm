@@ -3,7 +3,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-public class Main {
+public class boj_1967 {
     static BufferedReader br;
     static ArrayList<int[]>[] adj;
     static int n;
@@ -14,7 +14,7 @@ public class Main {
         br = new BufferedReader(new InputStreamReader(System.in));
         n = Integer.parseInt(br.readLine());
         adj = new ArrayList[n+1];
-        for(int i = 0 ; i < n+1 ; i++){
+        for(int i = 0 ; i <= n ; i++){
             adj[i] = new ArrayList<>();
         }
 
@@ -25,40 +25,25 @@ public class Main {
             int w = Integer.parseInt(str[2]);
             adj[p].add(new int[]{c,w});
             adj[c].add(new int[]{p,w});
+        }
 
+        for(int i=1 ; i <= n ; i++){
+            visited = new boolean[n+1];
+            dfs(i,0);
         }
-        int longest = 0;
-        for(int i=1 ; i < n ; i++){
-            if(i*2 > n){
-                path = 0;
-                visited = new boolean[n+1];
-                int each = dfs(i,true);
-                if (longest < each) {
-                    longest = each;
-                }
-            }
-        }
-        System.out.println(longest);
+        System.out.println(path);
     }
 
-    public static int dfs(int i, boolean wasLeaf){
+    public static void dfs(int i, int weight){
         visited[i] = true;
-        if( i * 2 > n && !wasLeaf){
-            return path;
-        }
-
-        int[] max = new int[]{0,0};
-        for(int[] each : adj[i]){
-            if(!visited[each[0]]) {
-                if (each[1] > max[1]) {
-                    max[1] = each[1];
-                    max[0] = each[0];
-                }
+        for(int[] each : adj[i]) {
+            int idx = each[0];
+            int w = each[1];
+            if (!visited[idx]) {
+                visited[idx] = true;
+                dfs(idx, weight + w);
             }
         }
-        dfs(max[0], i*2 > n );
-        visited[max[0]] = true;
-        path += max[1];
-        return path;
+        path = Math.max(path, weight);
     }
 }

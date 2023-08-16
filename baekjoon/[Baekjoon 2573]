@@ -1,0 +1,116 @@
+#include<iostream>
+#define fastio ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+using namespace std;
+
+int board[301][301];
+bool visit[301][301];
+int sero, garo;
+int dy[4] = { 1,0,-1,0 };
+int dx[4] = { 0,1,0,-1 };
+
+void input() {
+	cin >> sero >> garo;
+	int i, k;
+	for (i = 1; i <= sero; ++i) {
+		for (k = 1; k <= garo; ++k) {
+			cin >> board[i][k];
+		}
+	}
+}
+
+
+void melt() {
+	int i, k, d, ny, nx, zero;
+	int temp[301][301];
+	for (i = 1; i <= sero; ++i) {
+		for (k = 1; k <= garo; ++k) {
+			temp[i][k] = 0;
+			if (board[i][k] > 0) {
+				zero = 0;
+				for (d = 0; d < 4; ++d) {
+					ny = i + dy[d];
+					nx = k + dx[d];
+					if (ny >= 1 && ny <= sero && nx >= 1 && nx <= garo) {
+						if (board[ny][nx] == 0) zero++;
+					}
+				}
+				temp[i][k] = zero;
+			}
+		}
+	}
+	for (i = 1; i <= sero; ++i) {
+		for (k = 1; k <= garo; ++k) {
+			board[i][k] = board[i][k]>=temp[i][k]?board[i][k]-temp[i][k]:0;
+			
+		}
+	}
+}
+
+void visitClear() {
+	int i, k;
+	for (i = 1; i <= sero; ++i) {
+		for (k = 1; k <= garo; ++k) {
+			visit[i][k] = false;
+		}
+	}
+}
+
+void dfs(int y, int x) {
+	visit[y][x] = true;
+	int ny, nx, i;
+	for (i = 0; i < 4; ++i) {
+		ny = y + dy[i];
+		nx = x + dx[i];
+		if (ny >= 1 && ny <= sero && nx >= 1 && nx <= garo) {
+			if (!visit[ny][nx] && board[ny][nx] > 0) {
+				dfs(ny, nx);
+			}
+		}
+	}
+}
+
+bool separate() {
+	int i, k, count=0;
+	visitClear();
+	for (i = 1; i <= sero; ++i) {
+		for (k = 1; k <= garo; ++k) {
+			if (!visit[i][k]&&board[i][k]>0) {
+				dfs(i, k);
+				count++;
+				if (count > 1) return true;
+			}
+		}
+	}
+	return false;
+}
+
+bool allIceMelt() {
+	int i, k;
+	for (i = 1; i <= sero; ++i) {
+		for (k = 1; k <= garo; ++k) {
+			if (board[i][k] > 0) return false;
+		}
+	}
+	return true;
+}
+
+int solve() {
+	int i, k, day = 0;
+	while (!allIceMelt()) {
+		day++;
+		melt();
+		if (separate()) {
+			return day;
+		}
+		
+	}
+	return 0;
+}
+
+int main(void)
+{
+	fastio;
+	input();
+	cout << solve();
+	return 0;
+}

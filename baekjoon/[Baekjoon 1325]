@@ -1,0 +1,60 @@
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#define fastio ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+using namespace std;
+
+int ver, edge;
+vector<int> v[10001];
+bool visit[10001];
+int getChild(int now) {
+	int i, next;
+	int ret = 1;
+	for (i = 0; i < v[now].size(); ++i) {
+		next = v[now][i];
+		if (visit[next]) continue;
+		visit[next] = true;
+		ret += getChild(next);
+	}
+	return ret;
+}
+
+void visitClear() {
+	int i;
+	for (i = 1; i <= ver; ++i) {
+		visit[i] = false;
+	}
+}
+
+void solve() {
+	int i, maximum = -1, temp;
+	vector<int> maxV;
+	maxV.push_back(0);
+	for (i = 1; i <= ver; ++i) {
+		visitClear();
+		visit[i] = true;
+		temp = getChild(i);
+		//cout <<i<<":"<< temp << "\n";
+		maximum = max(maximum, temp);
+		maxV.push_back(temp);
+	}
+	for (i = 1; i <= ver; ++i) {
+		if (maxV[i] == maximum) {
+			cout << i << " ";
+		}
+	}
+}
+
+
+int main(void)
+{
+	fastio;
+	cin >> ver >> edge;
+	int i,a,b, pa, pb;
+	for (i = 0; i < edge; ++i) {
+		cin >> a >> b;
+		v[b].push_back(a);
+	}
+	solve();
+	return 0;
+}

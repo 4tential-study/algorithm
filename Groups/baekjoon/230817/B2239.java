@@ -41,6 +41,7 @@ public class B2239 {
             for(int i = 0; i < 9*9; i+=9) System.out.println(temp.substring(i, i+9)); 
             System.exit(0);
       }
+      else return;
     } 
 
     int current_y = zero_list.get(index)[0];

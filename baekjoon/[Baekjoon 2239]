@@ -1,0 +1,93 @@
+import java.io.*;
+import java.util.ArrayDeque;
+import java.util.Deque;
+import java.util.StringTokenizer;
+import java.util.*;
+
+class Pair{
+	int y,x;
+	Pair(int y, int x){
+		this.y = y;
+		this.x = x;
+	}
+}
+
+public class Main {
+
+	static int[][] board = new int[10][10];
+	static List<Pair> al = new ArrayList<>();
+	static boolean flag = false;
+	public static void makeAl() {
+		int i,k;
+		for(i=1; i<=9; ++i) {
+			for(k=1;k<=9; ++k) {
+				if(board[i][k]==0) {
+					al.add(new Pair(i,k));
+				}
+			}
+		}
+	}
+	
+	public static boolean valid(int y, int x, int num) {
+		int i,k;
+		for(i=1; i<=9; ++i) {
+			if(board[i][x]==num) return false;
+		}
+		for(k=1; k<=9; ++k) {
+			if(board[y][k]==num) return false;
+		}
+		int sy, sx;
+		if(y>=1&&y<=3) sy=1;
+		else if(y>=4&&y<=6) sy = 4;
+		else sy = 7;
+		if(x>=1&&x<=3) sx=1;
+		else if(x>=4&&x<=6) sx = 4;
+		else sx = 7;
+		for(i=sy; i<sy+3; ++i) {
+			for(k=sx; k<sx+3; ++k) {
+				if(board[i][k]==num) return false;
+			}
+		}
+		return true;
+	}
+	
+	public static void brute(int index) {
+		if(index==al.size()) {
+			for(int i=1; i<=9; ++i) {
+				for(int k=1; k<=9; ++k) {
+					System.out.print(board[i][k]);
+				}
+				System.out.println();
+			}
+			System.exit(0);
+		}
+		int y = al.get(index).y;
+		int x = al.get(index).x;
+		for(int i=1; i<=9; ++i) {
+			if(valid(y,x,i)) {
+				board[y][x] = i;
+				brute(index+1);
+				board[y][x] = 0;
+			}
+		}
+	}
+	
+	public static void solve() {
+		makeAl();
+		brute(0);
+	}
+	
+	public static void main(String[] args){
+		int i,k;
+		Scanner sc = new Scanner(System.in);
+		String line;
+		for(i=1; i<=9; ++i) {
+			line = sc.next();
+			for(k=1; k<=9; ++k) {
+				board[i][k] = (int)(line.charAt(k-1)-'0'); 
+			}
+		}
+		solve();
+	}
+
+}

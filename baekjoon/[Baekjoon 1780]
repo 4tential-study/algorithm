@@ -1,0 +1,64 @@
+#include<iostream>
+#define fastio 	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+
+using namespace std;
+int arr[3000][3000];
+int len;
+int numofone = 0;
+int numofzero = 0;
+int numofminusone = 0;
+void calcul(int lenofside, int m, int n) {
+	if (lenofside == 1) {
+		if (arr[m][n] == 1) numofone++;
+		else if (arr[m][n] == -1) numofminusone++;
+		else numofzero++;
+		return;
+	}
+
+	int i, k, num = arr[m][n], flag = 1;
+	for (i = m; i < lenofside + m; ++i) {
+		for (k = n; k < lenofside + n; ++k) {
+			if (num != arr[i][k]) {
+				flag = 0;
+				break;
+			}
+			num = arr[i][k];
+		}
+		if (flag == 0) break;
+	}
+	int nextlen = lenofside / 3;
+
+	if (flag == 0) {	//하나라도 다른게 있으면
+		calcul(nextlen, m, n);
+		calcul(nextlen, m + nextlen, n);
+		calcul(nextlen, m + 2 * nextlen, n);
+
+		calcul(nextlen, m, n + nextlen);
+		calcul(nextlen, m + nextlen, n + nextlen);
+		calcul(nextlen, m + 2 * nextlen, n + nextlen);
+
+		calcul(nextlen, m, n + 2 * nextlen);
+		calcul(nextlen, m + nextlen, n + 2 * nextlen);
+		calcul(nextlen, m + 2 * nextlen, n + 2 * nextlen);
+	}
+	else {	//다똑같으면 
+		if (arr[m][n] == 1) numofone++;
+		else if (arr[m][n] == -1) numofminusone++;
+		else numofzero++;
+	}
+}
+
+int main(void)
+{
+
+	cin >> len;
+	int i, k;
+	for (i = 1; i <= len; ++i) {
+		for (k = 1; k <= len; ++k) {
+			cin >> arr[i][k];
+		}
+	}
+	calcul(len, 1, 1);
+	cout << numofminusone << "\n" << numofzero << "\n" << numofone;
+
+}

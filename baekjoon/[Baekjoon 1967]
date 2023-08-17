@@ -1,0 +1,55 @@
+#include<iostream>
+#include<vector>
+using namespace std;
+int nodenum;
+int longindex;
+long long biggest = 0;
+
+vector<pair<int, int>> arr[10001];
+int visit[10001];
+
+void clear() {
+	int i;
+	for (i = 0; i <= nodenum; ++i) {
+		visit[i] = 0;;
+	}
+}
+
+void dfs(int root, long long dist) {
+	visit[root] = 1;
+	if (dist > biggest) {
+		biggest = dist;
+		longindex = root;
+	}
+	int i, nextnum;
+	long long mydist;
+	for (i = 0; i < arr[root].size(); ++i) {
+		nextnum = arr[root][i].first;
+		if (visit[nextnum] == 0) {
+			mydist = arr[root][i].second;
+			dfs(nextnum, mydist + dist);
+		}
+
+	}
+}
+
+int solve() {
+	dfs(1, 0);
+	clear();
+	dfs(longindex, 0);
+
+	return biggest;
+}
+
+int main(void)
+{
+	cin >> nodenum;
+	int i, k, startnum, endnum, gajoongchee;
+	for (i = 1; i < nodenum; ++i) {
+		cin >> startnum >> endnum >> gajoongchee;
+		arr[startnum].push_back({ endnum, gajoongchee });
+		arr[endnum].push_back({ startnum, gajoongchee });
+	}
+	cout << solve();
+	return 0;
+}

@@ -1,0 +1,73 @@
+#include<iostream>
+#include<queue>
+#define fastio ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+using namespace std;
+
+struct jwapyo {
+	int y, x, dist, flag;
+};
+int miro[1001][1001];
+int use[1001][1001][2];
+int dy[4] = { 1,0,-1,0 };
+int dx[4] = { 0,1,0,-1 };
+int sero, garo;
+int maximum = 210000000;
+
+int bfs() {
+	int i, nowy, nowx, nowd, breaknum, nexty, nextx;
+	int shortest = maximum;
+	queue<jwapyo> q;
+	q.push({ 1,1, 1,0 });
+	while (!q.empty()) {
+		nowy = q.front().y;
+		nowx = q.front().x;
+		nowd = q.front().dist;
+		breaknum = q.front().flag;
+		q.pop();
+		if (nowy == sero && nowx == garo) {
+			shortest = min(shortest, nowd);
+			continue;
+		}
+		for (i = 0; i < 4; ++i) {
+			nexty = nowy + dy[i];
+			nextx = nowx + dx[i];
+			if (nexty >= 1 && nexty <= sero && nextx >= 1 && nextx <= garo) {
+				if (miro[nexty][nextx] == 1 && breaknum == 0) {
+					use[nexty][nextx][1] = 1;
+					q.push({ nexty,nextx,nowd + 1,1 });
+				}
+				else if (miro[nexty][nextx] == 0 && use[nexty][nextx][breaknum] == 0) {
+					use[nexty][nextx][breaknum] = 1;
+					q.push({ nexty,nextx,nowd + 1,breaknum });
+
+				}
+			}
+
+		}
+	}
+	return shortest;
+}
+
+int solve() {
+	int path = bfs();
+	if (path == maximum) return -1;
+	return path;
+}
+
+int main(void)
+{
+	fastio;
+	cin >> sero >> garo;
+	int i, k;
+	char c;
+	for (i = 1; i <= sero; ++i) {
+		for (k = 1; k <= garo; ++k) {
+			cin >> c;
+			miro[i][k] = c - '0';
+			use[i][k][0] = 0;
+			use[i][k][1] = 0;
+		}
+	}
+	cout << solve();
+	return 0;
+}

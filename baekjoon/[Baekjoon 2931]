@@ -1,0 +1,268 @@
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.util.StringTokenizer;
+
+public class Main {
+	static int sero, garo;
+	static char[][] board;
+	static BufferedWriter bw;
+	
+	static boolean mustUp(int i, int k) {
+		if((board[i-1][k]=='|'||board[i-1][k]=='+'||board[i-1][k]=='1'||board[i-1][k]=='4'||board[i-1][k]=='M'||board[i-1][k]=='Z')) return true;
+		return false;
+	}
+	static boolean mustDown(int i, int k) {
+		if((board[i+1][k]=='|'||board[i+1][k]=='+'||board[i+1][k]=='2'||board[i+1][k]=='3'||board[i+1][k]=='M'||board[i+1][k]=='Z')) return true;
+		return false;
+	}
+	static boolean mustLeft(int i, int k) {
+		if((board[i][k-1]=='-'||board[i][k-1]=='+'||board[i][k-1]=='1'||board[i][k-1]=='2'||board[i][k-1]=='M'||board[i][k-1]=='Z')) return true;
+		return false;
+	}
+	static boolean mustRight(int i, int k) {
+		if((board[i][k+1]=='-'||board[i][k+1]=='+'||board[i][k+1]=='3'||board[i][k+1]=='4'||board[i][k+1]=='M'||board[i][k+1]=='Z')) return true;
+		return false;
+	}
+	
+	static boolean direct() {
+		int i,k;
+		int count=0;
+		for(i=1; i<=sero; ++i) {
+			for(k=1; k<=garo; ++k) {
+				if(board[i][k]=='|'||board[i][k]=='-'||board[i][k]=='+'||board[i][k]=='1'||board[i][k]=='2'||board[i][k]=='3'||board[i][k]=='4') {
+					count++;
+				}
+			}
+		}
+		if(count==0) return true;
+		return false;
+	}
+	
+	public static void solve() throws IOException { 
+		int i,k, y=0,x=0;
+		char dap='.';
+		
+		if(direct()) {			//특수한 경우 : 한칸 건너서 바로 갈 때 바로 리턴함
+			boolean flag = false;
+			for(i=1; i<=sero; ++i) {
+				for(k=1; k<=garo;++k) {
+					if(board[i][k]=='M') {
+						flag = true;
+						y=i;
+						x=k;
+						break;
+					}
+					if(flag) break;
+				}
+			}
+			int[] dy = {-2,2,0,0};
+			int[] dx = {0,0,-2,2};
+			int ny, nx;
+			ny = y+dy[0];
+			nx = x+dx[0];
+			if(ny>=1&&ny<=sero&&nx>=1&&nx<=garo) {
+				if(board[ny][nx]=='Z') {
+					y--;
+					dap = '|';
+				}
+			}
+			ny = y+dy[1];
+			nx = x+dx[1];
+			if(ny>=1&&ny<=sero&&nx>=1&&nx<=garo) {
+				if(board[ny][nx]=='Z') {
+					y++;
+					dap = '|';
+				}
+			}
+			ny = y+dy[2];
+			nx = x+dx[2];
+			if(ny>=1&&ny<=sero&&nx>=1&&nx<=garo) {
+				if(board[ny][nx]=='Z') {
+					x--;
+					dap = '-';
+				}
+			}
+			ny = y+dy[3];
+			nx = x+dx[3];
+			if(ny>=1&&ny<=sero&&nx>=1&&nx<=garo) {
+				if(board[ny][nx]=='Z') {
+					x++;
+					dap = '-';
+				}
+			}
+			bw.write(String.valueOf(y)+" "+String.valueOf(x)+" "+String.valueOf(dap)+"\n");
+			return;
+		}
+		
+		for(i=1; i<=sero; ++i) {
+			for(k=1; k<=garo; ++k) {		//모든 칸들을 순회하며 틀린 칸을 찾는 반복문
+				if(board[i][k]=='|') {
+					if(!mustUp(i,k)) {
+						y=i-1;x=k;
+						break;
+					}
+					if(!mustDown(i,k)) {
+						y=i+1;x=k;
+						break;
+					}
+				}
+				else if(board[i][k]=='-') {
+					if(!mustLeft(i,k)) {
+						y=i;x=k-1;
+						break;
+					}
+					if(!mustRight(i,k)) {
+						y=i;x=k+1;
+						break;
+					}
+				}
+				else if(board[i][k]=='+') {
+					if(!mustUp(i,k)) {
+						y=i-1;x=k;
+						break;
+					}
+					if(!mustDown(i,k)) {
+						y=i+1;x=k;
+						break;
+					}
+					if(!mustLeft(i,k)) {
+						y=i;x=k-1;
+						break;
+					}
+					if(!mustRight(i,k)) {
+						y=i;x=k+1;
+						break;
+					}
+				}
+				else if(board[i][k]=='1') {	//
+					if(!mustDown(i,k)) {
+						y=i+1;x=k;
+						break;
+					}
+					if(!mustRight(i,k)) {
+						y=i;x=k+1;
+						break;
+					}
+				}
+				else if(board[i][k]=='2') {
+					if(!mustUp(i,k)) {
+						y=i-1;x=k;
+						break;
+					}
+					if(!mustRight(i,k)) {
+						y=i;x=k+1;
+						break;
+					}
+				}
+				else if(board[i][k]=='3') {
+					if(!mustUp(i,k)) {
+						y=i-1;x=k;
+						break;
+					}
+					if(!mustLeft(i,k)) {
+						y=i;x=k-1;
+						break;
+					}
+				}
+				else if(board[i][k]=='4') {
+					if(!mustDown(i,k)) {
+						y=i+1;x=k;
+						break;
+					}
+					if(!mustLeft(i,k)) {
+						y=i;x=k-1;
+						break;
+					}
+				}
+			}
+			if(y!=0) break;
+		}
+		int[] dy = {-1,1,0,0};
+		int[] dx = {0,0,-1,1};
+		int ny, nx;
+		boolean up=false, down=false, left=false, right=false;	//필요한 플래그들을 선언해 상하좌우 중 어디로 가야하는지 선택함
+		ny = y+dy[0];
+		nx = x+dx[0];
+		if(ny>=1&&ny<=sero&&nx>=1&&nx<=garo) {
+			if(mustUp(y,x)) up=true;
+		}
+		ny = y+dy[1];
+		nx = x+dx[1];
+		if(ny>=1&&ny<=sero&&nx>=1&&nx<=garo) {
+			if(mustDown(y,x)) down=true;
+		}
+		ny = y+dy[2];
+		nx = x+dx[2];
+		if(ny>=1&&ny<=sero&&nx>=1&&nx<=garo) {
+			if(mustLeft(y,x)) left=true;
+		}
+		ny = y+dy[3];
+		nx = x+dx[3];
+		if(ny>=1&&ny<=sero&&nx>=1&&nx<=garo) {
+			if(mustRight(y,x)) right=true;
+		}
+		
+		//모든 경우를 확인하며 잃어버린 칸이 뭐였는지 찾음
+		if(up&&down&&!left&&!right) {
+			dap = '|';
+		}
+		else if(!up&&!down&&left&&right) {
+			dap = '-';
+		}
+		else if(up&&down&&left&&right) {
+			if(board[y][x-1]=='M'&&board[y][x+1]=='Z') {
+				dap = '|';
+			}
+			else if(board[y][x-1]=='Z'&&board[y][x+1]=='M') {
+				dap = '|';
+			}
+			else if(board[y-1][x]=='M'&&board[y+1][x]=='Z') {
+				dap = '-';
+			}
+			else if(board[y-1][x]=='Z'&&board[y+1][x]=='M') {
+				dap = '-';
+			}
+			else {
+				dap = '+';
+			}
+			
+		}
+		else if(!up&&down&&!left&&right) {
+			dap = '1';
+		}
+		else if(up&&!down&&!left&&right) {
+			dap = '2';
+		}
+		else if(up&&!down&&left&&!right) {
+			dap = '3';
+		}
+		else{
+			dap = '4';
+		}
+		bw.write(String.valueOf(y)+" "+String.valueOf(x)+" "+String.valueOf(dap)+"\n");
+	}
+	
+	public static void main(String[] args) throws NumberFormatException, IOException {
+		// TODO Auto-generated method stub
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));	//입력을 위한 버퍼드 리더
+		bw = new BufferedWriter(new OutputStreamWriter(System.out));	//출력을 위한 버퍼드 라이터
+		//int testcase = Integer.parseInt(br.readLine());
+		StringTokenizer st;
+		st = new StringTokenizer(br.readLine());
+		sero = Integer.parseInt(st.nextToken());	//세로, 가로
+		garo = Integer.parseInt(st.nextToken());
+		board= new char[sero+1][garo+1];
+		for(int i=1; i<=sero; ++i) {
+			String newLine = br.readLine();
+			for(int k=1; k<=garo; ++k) {
+				board[i][k] = newLine.charAt(k-1);
+			}
+		}
+		solve();
+		bw.flush();
+	}
+
+}

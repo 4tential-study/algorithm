@@ -1,0 +1,63 @@
+#include<iostream>
+#include<queue>
+#define fastio ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+using namespace std;
+
+char board[251][251];
+bool visit[251][251];
+
+int dy[4] = { 1,0,-1,0 };
+int dx[4] = { 0,1,0,-1 };
+int sero, garo;
+
+int wolf, yang;
+int dapWolf, dapYang;
+
+void dfs(int y, int x) {
+	visit[y][x] = true;
+	if (board[y][x] == 'v') wolf++;
+	else if (board[y][x] == 'o') yang++;
+	int i, ny, nx;
+	for (i = 0; i < 4; ++i) {
+		ny = y + dy[i];
+		nx = x + dx[i];
+		if (ny >= 1 && ny <= sero && nx >= 1 && nx <= garo) {
+			if (!visit[ny][nx] && board[ny][nx] != '#') {
+				dfs(ny,nx);
+			}
+		}
+	}
+}
+
+void solve() {
+	int i, k;
+	dapWolf=0, dapYang=0;
+	for (i = 1; i <= sero; ++i) {
+		for (k = 1; k <= garo; ++k) {
+			if (!visit[i][k] && board[i][k] != '#') {
+				wolf = 0; yang = 0;
+				dfs(i, k);
+				if (yang > wolf) wolf = 0;
+				else yang = 0;
+				dapWolf += wolf;
+				dapYang += yang;
+			}
+		}
+	}
+	cout << dapYang << " " << dapWolf;
+}
+
+int main(void)
+{
+	fastio;
+	cin >> sero >> garo;
+	int i, k;
+	for (i = 1; i <= sero; ++i) {
+		for (k = 1; k <= garo; ++k) {
+			cin >> board[i][k];
+			visit[i][k] = false;
+		}
+	}
+	solve();
+	return 0;
+}

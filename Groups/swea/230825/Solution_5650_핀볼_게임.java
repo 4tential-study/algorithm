@@ -61,18 +61,27 @@ public class Solution_5650_핀볼_게임 {
         // 가장자리에 부딪혔다면, 이동 방향을 바꾼다.
         if(move_dir < 2 && (dy == 0 || dy == length-1)){
           move_dir = Math.abs(move_dir - 1);  count++;
+<<<<<<< HEAD
           continue;
         }
         else if(move_dir >= 2 && (dx == 0 || dx == length-1)){
           move_dir = 5 - move_dir;  count++;
           continue;
+=======
+        }
+        else if(move_dir >= 2 && (dx == 0 || dx == length-1)){
+          move_dir = 5 - move_dir;  count++;
+>>>>>>> 0cdf2e2 (230827 - 핀볼 게임 진행 중2)
         }
 
         // 블럭에 부딪혔다면, 이동 경로를 변경한다.
         if(board[dy][dx] > 0 && board[dy][dx] <= 5){
           move_dir = blocks[board[dy][dx]][move_dir];
           count++;
+<<<<<<< HEAD
           continue;
+=======
+>>>>>>> 0cdf2e2 (230827 - 핀볼 게임 진행 중2)
         }
 
         // 현재 위치가 웜홀 자리일 경우, 웜홀을 탄다.

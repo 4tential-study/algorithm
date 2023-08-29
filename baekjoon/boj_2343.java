@@ -23,7 +23,7 @@ public class boj_2343 {
             int mid = (left + right) / 2;
             // mid -> 블루레이의 길이
             int count = getCount(n, lessonList, mid);
-
+            // count -> mid에 따라 만들어지는 강의 개수
             if(count > m){
                 left = mid + 1;
             }else{

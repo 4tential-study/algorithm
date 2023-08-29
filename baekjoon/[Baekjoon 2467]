@@ -1,0 +1,76 @@
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#define fastio ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+using namespace std;
+
+vector<int> p;
+vector<int> m;
+int num;
+void solve() {
+
+	if (p.size() == 0 && m.size() != 0) {
+		cout << m[m.size() - 2] << " " << m[m.size()-1];
+		return;
+	}
+	if (p.size() != 0 && m.size() == 0) {
+		cout << p[0] << " " << p[1];
+		return;
+	}
+	int minCha = 2100000000, one, two;
+	if (m.size() >= 2) {
+		if (abs(m[0] + m[1]) < minCha) {
+			one = m[m.size() - 2];
+			two = m[m.size() - 1];
+			minCha = abs(one + two);
+		}
+	}
+
+	if (p.size() >= 2) {
+		if (abs(p[0] + p[1]) < minCha) {
+			one = p[0];
+			two = p[1];
+			minCha = abs(one + two);
+		}
+	}
+	for (int i = 0; i < m.size(); ++i) {
+		int now = 0 - m[i];
+		int index = lower_bound(p.begin(), p.end(), now) - p.begin();
+		if (index + 1 >= 0 && index + 1 <= p.size() - 1) {
+			if (abs(m[i] + p[index + 1]) < minCha) {
+				one = m[i];
+				two = p[index + 1];
+				minCha = abs(one + two);
+			}
+		}
+		if (index >= 0 && index <= p.size() - 1) {
+			if (abs(m[i] + p[index]) < minCha) {
+				one = m[i];
+				two = p[index];
+				minCha = abs(one + two);
+			}
+		}
+		if (index - 1 >= 0 && index - 1 <= p.size() - 1) {
+			if (abs(m[i] + p[index - 1]) < minCha) {
+				one = m[i];
+				two = p[index - 1];
+				minCha = abs(one + two);
+			}
+		}
+	}
+	cout << one << " " << two;
+}
+
+int main(void)
+{
+	fastio;
+	cin >> num;
+	int i, n;
+	for (i = 0; i < num; ++i) {
+		cin >> n;
+		if (n > 0) p.push_back(n);
+		else m.push_back(n);
+	}
+	solve();
+	return 0;
+}

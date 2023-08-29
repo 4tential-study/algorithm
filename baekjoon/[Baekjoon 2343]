@@ -1,0 +1,64 @@
+#include<iostream>
+#include<vector>
+#include<algorithm>
+#define fastio ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+using namespace std;
+
+int arr[100001];
+int num, numofpart;
+int hap=0, maximum;
+
+int getPart(int size) {
+	int i, sum=0, ret=0;
+	for (i = 0; i < num; ++i) {
+		if (sum + arr[i] > size) {
+			ret++;
+			sum = arr[i];
+		}
+		else if (sum + arr[i] == size) {
+			ret++;
+			sum = 0;
+		}
+		else {
+			sum += arr[i];
+		}
+	}
+	if (sum != 0) ret++;
+	return ret;
+}
+
+int yeeboon(int start, int end) {
+	if (start == end) {
+		int getsu = getPart(start);
+		return start;
+	}
+	
+	int mid = (start + end) / 2;
+	int getsu = getPart(mid);
+	//cout << start << " " << end << " " << mid<<" = "<<getsu << endl;;
+	if (getsu <= numofpart) {
+		return yeeboon(start, mid);
+	}
+	else {
+		return yeeboon(mid+1, end);
+	}
+}
+
+int solve() {
+	int dap = yeeboon(maximum, hap);
+	return dap;
+}
+
+int main(void)
+{
+	fastio;
+	cin >> num >> numofpart;
+	int i;
+	for (i = 0; i < num; ++i) {
+		cin >> arr[i];
+		hap += arr[i];
+		maximum = max(maximum, arr[i]);
+	}
+	cout << solve();
+	return 0;
+}

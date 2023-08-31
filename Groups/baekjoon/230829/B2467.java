@@ -56,6 +56,7 @@ public class B2467 {
     System.out.println(sb);
   }  
 }
+<<<<<<< HEAD
 =======
     int negative_idx = -1, positive_idx = -1;
     int[] answer = new int[2];
@@ -101,3 +102,5 @@ public class B2467 {
   }  
 }
 >>>>>>> 1690e96 (230829 푸는 중...)
+=======
+>>>>>>> c34dadc58fc3c778bc76c63de69ff4b4212793a2

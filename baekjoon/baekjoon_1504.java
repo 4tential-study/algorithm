@@ -10,7 +10,21 @@ import java.util.PriorityQueue;
 import java.util.StringTokenizer;
 
 public class baekjoon_1504 {
-	static List<int[]>[] graph;
+	private static class Edge implements Comparable<Edge>{
+		int no;
+		int distance;
+		public Edge(int no, int distance) {
+			super();
+			this.no = no;
+			this.distance = distance;
+		}
+		@Override
+		public int compareTo(Edge o) {
+			return Integer.compare(this.distance, o.distance);
+		}
+	}
+	
+	static List<Edge>[] graph;
 	static int[] distances;
 	static int N, E;
 	public static void main(String[] args) throws IOException {
@@ -21,7 +35,7 @@ public class baekjoon_1504 {
 		E = Integer.parseInt(st.nextToken());
 		
 		graph = new ArrayList[N+1];
-		for(int i=1; i<=N; i++) graph[i] = new ArrayList<>();
+		for(int i=1; i<=N; i++) graph[i] = new ArrayList<Edge>();
 		distances = new int[N+1];
 		
 		
@@ -32,59 +46,74 @@ public class baekjoon_1504 {
 			int to = Integer.parseInt(st.nextToken());
 			int distance = Integer.parseInt(st.nextToken());
 			
-			graph[from].add(new int[] {to, distance});
-			graph[to].add(new int[] {from, distance});
+			graph[from].add(new Edge(to, distance));
+			graph[to].add(new Edge(from, distance));
 		}
 		st = new StringTokenizer(in.readLine());
 		
 		int v1 = Integer.parseInt(st.nextToken());
 		int v2 = Integer.parseInt(st.nextToken());
-				
 		
-		
-		
-		int start = 1;
-		int resultSum1 = 0;
-		int resultSum2 = 0;
-		
-		dijkstra(start);
-				
-		resultSum1 += distances[v1];
-		resultSum2 += distances[v2];
-		
-		dijkstra(v1);
-		resultSum1 += distances[v2];
-		resultSum2 += distances[N];
-		
-		dijkstra(v2);
-		resultSum2 += distances[v1];
-		resultSum1 += distances[N];
-		
-		if(resultSum1==0 && resultSum2==0) System.out.println("-1");
-		else System.out.println(Math.min(resultSum1, resultSum2));
+		printResult(v1, v2);
 	}
+	
+	
 	static void dijkstra(int start) {
 		Arrays.fill(distances, Integer.MAX_VALUE);
-		PriorityQueue<Integer> pq = new PriorityQueue<>();
+		PriorityQueue<Edge> pq = new PriorityQueue<>();
 		boolean visit[] = new boolean[N+1];
 		distances[start] = 0;
-		pq.offer(start);
+		pq.offer(new Edge(start, 0));
 	
 		while(!pq.isEmpty()){
-			int cur =  pq.poll();
+			Edge curEdge =  pq.poll();
+			int cur = curEdge.no;
 			int min = distances[cur];
 			
 			if(visit[cur])continue;
 			visit[cur] = true;
 			
-			for(int[] next : graph[cur]) {
-				int no = next[0];
-				int dist = next[1];
+			for(Edge next : graph[cur]) {
+				int no = next.no;
+				int dist = next.distance;
 				if(!visit[no] && distances[no] > min + dist) {
 					distances[no] = min+dist;
-					pq.offer(no);
+					pq.offer(new Edge(no, distances[no]));
 				}
 			}
 		}
+	}
+	static void printResult(int v1, int v2) {
+		int start = 1;
+		int result1 = 0;
+		int result2 = 0;
+		
+		result1 = getDistance(v1, v2);
+		result2 = getDistance(v2, v1);
+		
+		if(result1==0 && result2==0) System.out.println("-1");
+		else if(result1!=0 && result2!=0) System.out.println(Math.min(result1, result2));
+		else if(result1!=0) System.out.println(result1);
+		else if(result2!=0) System.out.println(result2);
+	}
+	static boolean canArrive(int destination) {
+		return distances[destination]!=Integer.MAX_VALUE;
+	}
+	static int getDistance(int first, int second){
+		int sum=0;
+
+		dijkstra(1);
+		if(canArrive(first)) sum += distances[first];
+		else return 0;
+
+		dijkstra(first);
+		if(canArrive(second)) sum += distances[second];
+		else return 0;
+
+		dijkstra(second);
+		if(canArrive(N)) sum += distances[N];
+		else return 0;
+		
+		return sum;
 	}
 }

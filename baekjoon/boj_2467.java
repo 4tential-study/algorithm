@@ -18,8 +18,8 @@ public class boj_2467 {
         }
 
         long min = Long.MAX_VALUE;
-        int ml =0, mr = 0;
-        for(int i=0; i < n-1; i++) {
+        int ml = 0, mr = 0;
+        for(int i = 0 ; i < n-1; i++) {
             int left = i+1;
             int right = n-1;
             while(left<=right) {
@@ -30,9 +30,9 @@ public class boj_2467 {
                     min = sum;
                     ml = i; mr = mid;
                 }
-                if(arr[mid]>= -arr[i]) { //0
+                if(arr[mid] >= -arr[i]) { //0
                     right = mid-1;
-                }else{
+                }else {
                     left = mid+1;
                 }
             }

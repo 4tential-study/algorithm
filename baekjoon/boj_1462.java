@@ -17,13 +17,11 @@ public class boj_1462 {
 		int from;
 		int to;
 		int v;
-		
 		Edge(int from, int to, int v){
 			this.from = from;
 			this.to= to;
 			this.v = v;
 		}
-
 		@Override
 		public int compareTo(Edge o) {
 			return this.v-o.v;
@@ -41,17 +39,17 @@ public class boj_1462 {
 		parents = new int[n+1];
 		univ = new String[n+1];
 		st = new StringTokenizer(br.readLine());
-		if(!st.hasMoreTokens()) {
-			return;
-		}
-		
+
 		for(int i=1 ; i <= n ; i++) {
+			if(!st.hasMoreTokens()) {
+				return;
+			}
 			univ[i] = st.nextToken();
 		}
 		
 		for(int i=0 ; i < m ; i++) {
 			String input= "";
-			if(!(input = br.readLine()).equals(null)) {
+			if((input = br.readLine()) != null) {
 				String[] splits = input.split(" ");
 				 int u = Integer.parseInt(splits[0]);
 				 int v = Integer.parseInt(splits[1]);
@@ -74,7 +72,7 @@ public class boj_1462 {
 		int result = 0;
 		int item = 0;
 		for(int i=0 ; i < m ; i++) {
-			if(pq.peek().equals(null)) {
+			if(pq.peek()==null) {
 				System.out.println(-1);
 				return;
 			}

@@ -22,7 +22,7 @@ public class boj_15922 {
                 e = b;
                 dist += e - s;
             } else {
-                //선분이 겹치는 경우
+                //선분이 겹치는 경
                 if (a <= e) {
                     if (a <= s) {
                         dist += a - s;
@@ -42,9 +42,6 @@ public class boj_15922 {
             }
 
         }
-
         System.out.println(dist);
-
-
     }
 }

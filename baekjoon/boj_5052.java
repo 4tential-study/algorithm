@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class boj_5052 {
-
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int T = Integer.parseInt(br.readLine());

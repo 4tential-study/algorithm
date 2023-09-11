@@ -1,30 +1,40 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 public class boj_5052 {
 
 	public static void main(String[] args) throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int T = Integer.parseInt(br.readLine());
+		
 		for(int i=0 ; i < T ; i++){
-			int n = Integer.parseInt(br.readLine());
+			boolean contain = true;
+			int n = Integer.parseInt(br.readLine());//3
 			Trie trie = new Trie();
-			String minS = "0000000000";
+//			String minS = "0000000000";
+			ArrayList<String> list = new ArrayList<>();
 			for(int j=0 ; j < n ; j++){
 				String s = br.readLine();
-				trie.insert(s);
-				if(minS.length() >= s.length()){
-					minS = s;
+				
+				list.add(s);
+				
+				trie.insert(s);	
+			}
+			for(String k : list) {
+				if(trie.contains(k)) {
+					contain = false;
+					break;
 				}
 			}
-
-			if(trie.search(minS)==null) {
-				System.out.println("YES");
-			} else System.out.println("NO");
-
+			
+			
+			
+			
+			System.out.println(contain ? "YES":"NO");
+			
 		}
 	}
 
@@ -46,13 +56,25 @@ public class boj_5052 {
 			node.isEnd = true;
 		}
 
-		Node search(String str){
+		boolean contains(String word) {
 			Node node = this.root;
-			for(char ch : str.toCharArray()){
-				node = node.child.getOrDefault(ch, null);
-				if(node == null) return null;
+			for(int i=0 ; i < word.length() ; i++) {
+				char c = word.charAt(i);
+				Node tnode = node.child.get(c);
+				if(tnode== null) {
+					return false;
+				}
+				node = tnode;
 			}
-			return node;
+			
+			if(node.isEnd) {
+				if(node.child.isEmpty()) {
+					return false;
+				}
+			}
+				return true;
+				
+				
 		}
 	}
 }

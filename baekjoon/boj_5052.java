@@ -1,71 +1,81 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Map;
 
 public class boj_5052 {
-
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
-	}
-	public class TrieNode {
-
-		// [ 변수 ]
-		// 자식 노드 맵
-		private Map<Character, TrieNode> childNodes = new HashMap<>();
-		// 마지막 글자인지 여부
-		private boolean isLastChar;
+	public static void main(String[] args) throws IOException {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		int T = Integer.parseInt(br.readLine());
 		
-		// [ GETTER / SETTER 메서드 ]
-		// 자식 노드 맵 Getter
-		Map<Character, TrieNode> getChildNodes() {
-			return this.childNodes;
-		}
-		// 마지막 글자인지 여부 Getter
-		boolean isLastChar() {
-			return this.isLastChar;
-		}
-		// 마지막 글자인지 여부 Setter
-		void setIsLastChar(boolean isLastChar) {
-			this.isLastChar = isLastChar;
-		}
-		
-	}
-	
-	public class Trie {
-
-		// [ 변수 ]
-		// 루트 노드
-		private TrieNode rootNode;
-
-		// [ 생성자 ]
-		Trie() {
-			rootNode = new TrieNode();
-		}
-		
-		void insert(String word) {
-			TrieNode thisNode = this.rootNode;
-
-			for (int i = 0; i < word.length(); i++) {
-				thisNode = thisNode.getChildNodes().computeIfAbsent(word.charAt(i), c -> new TrieNode());
-			}	
-			thisNode.setIsLastChar(true);
-		}
-	    
-		// 특정 단어가 들어있는지 확인
-		boolean contains(String word) {
-			TrieNode thisNode = this.rootNode;
-
-			for (int i = 0; i < word.length(); i++) {
-				char character = word.charAt(i);
-				TrieNode node = thisNode.getChildNodes().get(character);
-
-				if (node == null)
-					return false;
-
-				thisNode = node;
+		for(int i=0 ; i < T ; i++){
+			boolean notContain = true;
+			int n = Integer.parseInt(br.readLine());//3
+			Trie trie = new Trie();
+//			String minS = "0000000000";
+			ArrayList<String> list = new ArrayList<>();
+			for(int j=0 ; j < n ; j++){
+				String s = br.readLine();
+				
+				list.add(s);
+				trie.insert(s);	
 			}
+			for(String k : list) {
+				if(trie.contains(k)) {
+					notContain = false;
+					break;
+				}
+			}
+			
+			
+			
+			 
+			System.out.println(notContain ? "YES" : "NO"); 
+			
+		}
+	}
 
-			return thisNode.isLastChar();
+	
+	public static class Node{
+		HashMap<Character, Node> child = new HashMap<>();
+		boolean isEnd;
+
+
+	}
+	public static class Trie{
+		Node root = new Node();
+
+		void insert(String str){
+			Node node = this.root;
+			for(char ch : str.toCharArray()){
+				node = node.child.computeIfAbsent(ch, key -> new Node());
+			}
+			node.isEnd = true;
+		}
+
+		boolean contains(String word) {
+			Node node = this.root;
+			for(int i=0 ; i < word.length() ; i++) {
+				char c = word.charAt(i);
+				Node tnode = node.child.get(c);
+				//해당 문자에 대한 다음 노드가 null인 경우, 해당 문자열은 트라이에 없다. -> false
+				if(tnode == null) {
+					return false;
+				}
+				//해당 문자에 대한 다음 노드가 존재하는 경우,
+				node = tnode;
+			}
+			//해당 노드가 마지막이라면, 포함된 문자열이다.
+			if(node.isEnd) {
+				if(node.child.isEmpty()) {
+					return false;
+				}
+			}
+			//해당 노드가 마지막이 아니라면, 같은 문자열은 아니다.
+				return true;
+				
+				
 		}
 	}
 }

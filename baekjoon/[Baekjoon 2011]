@@ -1,0 +1,59 @@
+#include <stdio.h>
+
+char password[5010];
+int pass[5010];
+int dp[5010];
+int len=0;
+void init(){
+	int i;
+	for(i=0; password[i]!='\0'; ++i){
+		len++;
+		pass[i] = (int)(password[i]-'0');
+		dp[i] = -1;
+	}
+}
+
+int brute(int index){
+	if(index==0){
+		if(pass[index]==0) return 0;
+		return 1;
+	}
+	if(index==1){
+		int temp;
+		if(pass[0]!=0&&(pass[0]*10+pass[1])<=26){
+			temp=1;
+		}
+		else{
+			temp=0;
+		}
+		if(pass[1]!=0){
+			temp = (temp%1000000+brute(0)%1000000)%1000000;
+		}
+		dp[1] = temp;
+		return temp;
+	}
+	int ret = dp[index];
+	if(ret!=-1) return ret;
+	ret = 0;
+	if(pass[index]!=0){
+		ret = (ret%1000000+brute(index-1)%1000000)%1000000;
+	}
+	if(pass[index-1]!=0&&(pass[index-1]*10+pass[index])<=26){
+		ret = (ret%1000000+brute(index-2)%1000000)%1000000;
+	}
+	dp[index] = ret;
+	return ret;	
+}
+
+int solve(){
+	int dap = brute(len-1);
+	return dap;
+}
+
+int main()
+{
+	scanf("%s", password);
+	init();
+	printf("%d", solve());
+	return 0;
+}

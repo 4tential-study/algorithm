@@ -19,9 +19,9 @@ public class prog_67259 {
 	        BOARD = board;
 	        n = board.length;    
 	        visited = new boolean[n][n];
-		      array = new int[n][n];
- 
-		        bfs(0,0,0);  
+			array = new int[n][n];
+
+		        bfs(0,0,-1,0);
 	       
 	        for(int i=0 ; i < n ; i++) {
 		        System.out.println(Arrays.toString(array[i]));
@@ -31,72 +31,42 @@ public class prog_67259 {
 	    }
 	    static int plus;
 	    
-	    public static void bfs(int i, int j, int dir) {
+	    public static void bfs(int i, int j, int dir , int v) {
 			Queue<int[]> queue = new ArrayDeque<>();
-			queue.add(new int[]{i,j});
+			queue.add(new int[]{i,j,dir,v});
 			visited[i][j] = true;
 			while(!queue.isEmpty()) {
 				int[] poll = queue.poll();
-//				if(poll[0] == n-1 && poll[1] == n-1){	
-//	        		ans = Math.min(price, ans);
-//	        		return;
-//		        }
-				
+				if(poll[0] == n-1 && poll[1]== n-1){
+					ans = Math.min(ans, poll[3]);
+				}
 				for(int f=0; f < 4 ;f ++) {
 					int y = poll[0]+delta[f][0];
 					int x = poll[1]+delta[f][1];
-					if(inRange(y,x) && !visited[y][x] && BOARD[y][x] != 1) {
-						visited[y][x] = true;
-						if(dir == f || (dir+2) % 4 == f){
-		                	plus = 100;	                	             
-		                }
-		                else {
-		                	 plus = 600;	                	
-		                }
-		                
-		                if(i==0 && j==0) {
-			            	plus = 100; 
-			            }
-		                array[x][y] += array[i][j] + plus;
-		                queue.add(new int[] {i,j,f});
-		                visited[y][x] = false;
+					int d = poll[2];
+					int price = poll[3];
+
+					if(inRange(y,x)  && BOARD[y][x] != 1) {
+
+						if (dir==-1) {
+							price += 100;
+						}
+						else if (d == f) {
+							price += 100;
+						} else {
+							price += 600;
+						}
+
+						if(array[y][x] >= price || !visited[y][x]){
+							visited[y][x] = true;
+							array[y][x] = price;
+							queue.add(new int[]{y,x,f,price});
+						}
 					}
 				}
 			}
 		}
-	    
-//	    public static void dfs(int i, int j, int price, int dir){
-//	    	if(i == n-1 && j == n-1){	
-//        		ans = Math.min(price, ans);
-//        		return;
-//	        }
-//	    	
-//	        for(int f=0 ; f < 4 ;f++){
-//	            int y = i + delta[f][0];
-//	            int x = j + delta[f][1];
-//	            
-//	            
-//	            if(inRange(y,x) && !visited[y][x] && BOARD[y][x] != 1){
-//	            	
-//	                if(dir == f || (dir+2) % 4 == f){
-//	                	plus = 100;	                	             
-//	                }
-//	                else {
-//	                	 plus = 600;	                	
-//	                }
-//	                
-//	                if(i==0 && j==0) {
-//		            	plus = 100; 
-//		            }
-//	            	array[y][x] = array[i][j] + plus;
-//
-//	                visited[y][x] = true;
-//	                if(array[y][x] >= price+plus) dfs(y,x,price+plus,f);
-//                	visited[y][x] = false;
-//	            }
-//	            
-//	        }
-//	    }
+
 	    
 	    public static boolean inRange(int y, int x){
 	        return y >=0 && x >= 0 && y < n && x < n;

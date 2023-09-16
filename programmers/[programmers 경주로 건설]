@@ -1,0 +1,148 @@
+#include <string>
+#include <vector>
+#include <iostream>
+#include<queue>
+#include<vector>
+#define inf 2100000000
+using namespace std;
+
+struct five{
+    int y,x,prevY, prevX, cost;
+};
+
+struct cmp{
+    bool operator()(five f1, five f2){
+        return f1.cost>f2.cost;
+    }
+};
+
+int pan[26][26];
+int len;
+
+bool canGo(int y, int x){
+    if(y>=1&&y<=len&&x>=1&&x<=len){
+        if(pan[y][x]==0) return true;
+    }
+    return false;
+}
+
+int solve(){
+    int i,k;
+    int dist[26][26][26][26];
+    for(i=1; i<=len; ++i){
+        for(k=1; k<=len; ++k){
+            for(int a=1; a<=len; ++a){
+                for(int b=1; b<=len; ++b){
+                    dist[i][k][a][b] = inf;
+                }
+            }
+            
+        }
+    }
+    priority_queue<five, vector<five>, cmp> pq;
+    //dist[1][1][0][1] = 0;
+    //dist[1][1][1][0] = 0;
+    if(pan[1][2]!=1){
+        dist[1][2][1][1] = 100;
+        pq.push({1,2,1,1, 100});
+    }
+    if(pan[2][1]!=1){
+        dist[2][1][1][1] = 100;
+        pq.push({2,1,1,1, 100});
+    }
+    
+    int y,x,ny, nx, py, px, c, nc;
+    while(!pq.empty()){
+        y = pq.top().y;
+        x = pq.top().x;
+        py = pq.top().prevY;
+        px = pq.top().prevX;
+        c = pq.top().cost;
+        //cout<<y<<","<<x<<" "<<py<<","<<px<<" "<<c<<endl;
+        pq.pop();
+        if(c>dist[y][x][py][px]) continue;
+        if(x==px){  //세로 
+            ny = y; nx = x-1;
+            if(canGo(ny, nx)){  //90도 꺾음 
+                nc = c+600;
+                if(dist[ny][nx][y][x]>nc){
+                    dist[ny][nx][y][x] = nc;
+                    pq.push({ny,nx,y,x,nc});
+                } 
+            }
+            ny = y; nx = x+1; 
+            if(canGo(ny, nx)){  //90도 꺾음 
+                nc = c+600;
+                if(dist[ny][nx][y][x]>nc){
+                    dist[ny][nx][y][x] = nc;
+                    pq.push({ny,nx,y,x,nc});
+                } 
+            }
+            ny = y-1; nx = x; 
+            if(canGo(ny, nx)){  //쭉 감
+                nc = c+100;
+                if(dist[ny][nx][y][x]>nc){
+                    dist[ny][nx][y][x] = nc;
+                    pq.push({ny,nx,y,x,nc});
+                } 
+            }
+            ny = y+1; nx = x; 
+            if(canGo(ny, nx)){  //쭉 감
+                nc = c+100;
+                if(dist[ny][nx][y][x]>nc){
+                    dist[ny][nx][y][x] = nc;
+                    pq.push({ny,nx,y,x,nc});
+                } 
+            }
+        }
+        else{
+            ny = y; nx = x-1; 
+            if(canGo(ny, nx)){  
+                nc = c+100;
+                if(dist[ny][nx][y][x]>nc){
+                    dist[ny][nx][y][x] = nc;
+                    pq.push({ny,nx,y,x,nc});
+                } 
+            }
+            ny = y; nx = x+1; 
+            if(canGo(ny, nx)){  
+                nc = c+100;
+                if(dist[ny][nx][y][x]>nc){
+                    dist[ny][nx][y][x] = nc;
+                    pq.push({ny,nx,y,x,nc});
+                } 
+            }
+            ny = y-1; nx = x; 
+            if(canGo(ny, nx)){  
+                nc = c+600;
+                if(dist[ny][nx][y][x]>nc){
+                    dist[ny][nx][y][x] = nc;
+                    pq.push({ny,nx,y,x,nc});
+                } 
+            }
+            ny = y+1; nx = x; 
+            if(canGo(ny, nx)){  
+                nc = c+600;
+                if(dist[ny][nx][y][x]>nc){
+                    dist[ny][nx][y][x] = nc;
+                    pq.push({ny,nx,y,x,nc});
+                } 
+            }
+        }
+    }
+    int dap = min(dist[len][len][len][len-1], dist[len][len][len-1][len]);
+    return dap;
+}
+
+int solution(vector<vector<int>> board) {
+    int answer = 0;
+    int i,k;
+    len = board.size();
+    for(i=1; i<=len; ++i){
+        for(k=1; k<=len; ++k){
+            pan[i][k] = board[i-1][k-1];
+        }
+    }
+    answer = solve();
+    return answer;
+}

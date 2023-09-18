@@ -1,0 +1,113 @@
+#include <string>
+#include <vector>
+#include<queue>
+#define inf 2100000000
+#include<iostream>
+#include<algorithm>
+using namespace std;
+
+int maxAlgo=0, maxGoo=0, len;
+vector<pair<int, int>> algo;
+vector<pair<int, int>> goo;
+vector<int> t;
+
+struct three{
+    int a, g, t;
+};
+
+struct cmp{
+    bool operator()(three t1, three t2){
+        return t1.t>t2.t;
+    }
+};
+
+int solve(int firstA, int firstG){
+    int dist[151][151];
+    int i,k;
+    for(i=firstA; i<151; ++i){
+        for(k=firstG; k<151; ++k){
+            dist[i][k] = inf;
+        }
+    }
+    priority_queue<three, vector<three>, cmp> pq;
+    pq.push({firstA, firstG, 0});
+    dist[firstA][firstG]  = 0;
+    int nowA, nowG, nextA, nextG, nowTime, nextTime;
+    int dap = inf;
+    bool al, go;
+    //cout<<maxAlgo<<" "<<maxGoo<<endl;
+    while(!pq.empty()){
+        nowA = pq.top().a;
+        nowG = pq.top().g;
+        nowTime = pq.top().t;
+        pq.pop();
+        //cout<<nowA<<" "<<nowG<<" "<<nowTime<<" "<<dist[nowA][nowG]<<" "<<dap<<endl;
+        if(nowA>=maxAlgo&&nowG>=maxGoo){
+            dap = nowTime;
+            break;
+        }
+        if(nowTime>dist[nowA][nowG]) continue;
+        //if(nowTime>dap) continue;
+        nextA = nowA+1;
+        nextG = nowG;
+        nextA = min(nextA, 150);
+        nextG = min(nextG, 150);
+        nextTime = nowTime+1;
+        if(dist[nextA][nextG]>nextTime){
+            dist[nextA][nextG]=nextTime;
+            pq.push({nextA, nextG, nextTime});
+        }
+        nextA = nowA;
+        nextG = nowG+1;
+        nextA = min(nextA, 150);
+        nextG = min(nextG, 150);
+        nextTime = nowTime+1;
+        if(dist[nextA][nextG]>nextTime){
+            dist[nextA][nextG]=nextTime;
+            pq.push({nextA, nextG, nextTime});
+        }
+        
+        
+        //cout<<"일로옴\n";
+        
+        for(i=0; i<len; ++i){
+            /*
+            if(algo[i].first>nowA) break;
+            if(goo[i].first>nowG) continue;
+            */
+            if(algo[i].first>nowA||goo[i].first>nowG) continue;
+            if(algo[i].second==0&&goo[i].second==0) continue;
+            nextA = nowA+algo[i].second;
+            nextG = nowG+goo[i].second;
+            nextA = min(nextA, 150);
+            nextG = min(nextG, 150);
+            nextTime = nowTime+t[i];
+            if(dist[nextA][nextG]>nextTime){
+                dist[nextA][nextG]=nextTime;
+                pq.push({nextA, nextG, nextTime});
+            }
+        }
+    }
+    return dap;
+}
+
+bool compare(vector<int> v1, vector<int> v2){
+    return v1[0]<v2[0];
+}
+
+int solution(int alp, int cop, vector<vector<int>> problems) {
+    int i;
+    //sort(problems.begin(), problems.end(), compare);
+
+    for(i=0; i<problems.size(); ++i){
+        algo.push_back({problems[i][0], problems[i][2]});
+        goo.push_back({problems[i][1], problems[i][3]});
+        t.push_back(problems[i][4]);
+        maxAlgo = max(maxAlgo, problems[i][0]);
+        maxGoo = max(maxGoo, problems[i][1]);
+    }
+    len = t.size();
+    int answer = 0;
+    answer = solve(alp, cop);
+    return answer;
+}

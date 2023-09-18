@@ -1,0 +1,94 @@
+#include<stdio.h>
+
+int len;
+char board[51][51];
+
+int dfsSero(int y, int x, char c){
+	int ret = 1;
+	if(y+1<=len){
+		if(board[y+1][x]==c){
+			ret+=dfsSero(y+1, x, c);
+		}
+	} 
+	return ret;
+}
+
+int dfsGaro(int y, int x, char c){
+	int ret = 1;
+	if(x+1<=len){
+		if(board[y][x+1]==c){
+			ret+=dfsGaro(y, x+1, c);
+		}
+	} 
+	return ret;
+}
+
+int getMaxLen(){
+	int i,k, temp, ans = 0;
+	
+	for(i=1; i<=len; ++i){
+		k=1;
+		while(k<=len){
+			temp = dfsGaro(i,k, board[i][k]);
+			ans = ans<temp?temp:ans;
+			k+=temp;
+		}
+	}
+	
+	for(k=1; k<=len; ++k){
+		i=1;
+		while(i<=len){
+			temp = dfsSero(i,k, board[i][k]);
+			ans = ans<temp?temp:ans;
+			i+=temp;
+		}
+	}
+	return ans;
+}
+
+int solve(){
+	int i,k, ans = 0, temp;
+	char c;
+	for(i=1; i<=len; ++i){
+		for(k=1; k<len; ++k){
+			c = board[i][k];
+			board[i][k] = board[i][k+1];
+			board[i][k+1] = c;
+			temp = getMaxLen();
+			ans = ans<temp?temp:ans;
+			c = board[i][k];
+			board[i][k] = board[i][k+1];
+			board[i][k+1] = c;
+		}
+		
+	}
+	for(k=1; k<=len; ++k){
+		for(i=1; i<len; ++i){
+			c = board[i][k];
+			board[i][k] = board[i+1][k];
+			board[i+1][k] = c;
+			temp = getMaxLen();
+			ans = ans<temp?temp:ans;
+			c = board[i][k];
+			board[i][k] = board[i+1][k];
+			board[i+1][k] = c;
+		}
+		
+	}
+	return ans;
+}
+
+int main(void)
+{
+	scanf("%d", &len);
+	getchar();
+	int i,k;
+	for(i=1; i<=len; ++i){
+		for(k=1; k<=len; ++k){
+			scanf("%c", &board[i][k]);
+		}
+		getchar();
+	}
+	printf("%d", solve());
+	return 0;
+}

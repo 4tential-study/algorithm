@@ -1,0 +1,52 @@
+#include <string>
+#include <vector>
+#include<iostream>
+using namespace std;
+int num;
+vector<int> v[201];
+bool visit[201];
+void visitClear(){
+    int i;
+    for(i=1; i<=num; ++i){
+        visit[i] = false;
+    }
+}
+
+void dfs(int x){
+    visit[x] = true;
+    int i, next;
+    for(i=0; i<v[x].size(); ++i){
+        next = v[x][i];
+        if(!visit[next]){
+            dfs(next);
+        }
+    }
+}
+
+int solve(){
+    int i,k, count=0;
+    visitClear();
+    for(i=1; i<=num; ++i){
+        if(!visit[i]){
+            count++;
+            dfs(i);
+        }
+    }
+    return count;
+}
+
+int solution(int n, vector<vector<int>> computers) {
+    int answer = 0;
+    num = computers.size();
+    int i,k;
+    for(i=0; i<num; ++i){
+        for(k=0; k<num; ++k){
+            if(i!=k&&computers[i][k]){
+                v[i+1].push_back(k+1);
+                //v[k].push_back(i);
+            }
+        }
+    }
+    answer = solve();
+    return answer;
+}

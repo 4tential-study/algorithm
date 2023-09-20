@@ -1,0 +1,53 @@
+#include<iostream>
+#include<queue>
+#include<vector>
+using namespace std;
+
+struct three{
+	int id, t, p;
+};
+
+struct cmp{
+	bool operator()(three t1, three t2){
+		if(t1.p==t2.p){
+			return t1.id>t2.id;
+		}
+		return t1.p<t2.p;
+	}
+};
+
+int time, num;
+priority_queue<three, vector<three>, cmp> pq;
+
+void input(){
+	cin>>time>>num;
+	int i,a,b,c;
+	for(i=0; i<num; ++i){
+		cin>>a>>b>>c;
+		pq.push({a,b,c});
+	}
+}
+
+void solve(){
+	int count=0;
+	int id, t, p;
+	while(!pq.empty()&&count<time){
+		id = pq.top().id;
+		t = pq.top().t;
+		p = pq.top().p;
+		pq.pop();
+		cout<<id<<"\n";
+		count++;
+		p--;
+		t--;
+		if(t!=0){
+			pq.push({id,t,p});
+		}
+	}
+}
+
+int main(void)
+{
+	input();
+	solve();
+}

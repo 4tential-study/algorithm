@@ -1,0 +1,113 @@
+#include<iostream>
+#include<queue>
+using namespace std;
+
+int len;
+int sy, sx;
+int big;
+int board[21][21];
+int visit[21][21];
+int dy[4] = {1,0,-1,0};
+int dx[4] = {0,1,0,-1};
+int eatFish;
+void visitClear(){
+	int i,k;
+	for(i=1; i<=len; ++i){
+		for(k=1; k<=len; ++k){
+			visit[i][k] = -1;
+		}
+	}
+}
+
+pair<pair<int, int>, int> findFish(){
+	
+	queue<pair<pair<int, int>, int>> q;
+	q.push({{sy, sx}, 0});
+	visitClear();
+	visit[sy][sx] = 0;
+	int y,x,d,ny,nx,i,k;
+	while(!q.empty()){
+		y = q.front().first.first;
+		x = q.front().first.second;
+		d = q.front().second;
+		q.pop();
+		for(i=0; i<4; ++i){
+			ny = y+dy[i];
+			nx = x+dx[i];
+			if(ny>=1&&ny<=len&&nx>=1&&nx<=len){
+				if(visit[ny][nx]==-1&&board[ny][nx]<=big){
+					visit[ny][nx] = d+1;
+					q.push({{ny, nx}, d+1});
+				}
+			}
+		}
+	}
+	int minimum=2100000000;
+	ny = 2100000000; nx=2100000000;
+	for(i=1; i<=len; ++i){
+		for(k=1; k<=len; ++k){
+			if(visit[i][k]!=-1&&board[i][k]!=0&&board[i][k]<big){
+				if(minimum>visit[i][k]){
+					minimum=visit[i][k]; ny = i; nx = k;
+				}
+				else if(minimum==visit[i][k]){
+					if(ny>i){
+						minimum=visit[i][k]; ny = i; nx = k;
+					}
+					else if(ny==i){
+						if(nx>k){
+							minimum=visit[i][k]; ny = i; nx = k;
+						}
+					}
+				}
+			}
+		}
+	}
+	if(minimum==2100000000) return {{0,0},0};
+	return {{ny,nx}, minimum};
+}
+
+int solve(){
+	int count=0;
+	big = 2;
+	pair<pair<int,int>,int> pos;
+	int ny, nx, length;
+	eatFish=0;
+	//cout<<endl;
+	while(true){
+		pos = findFish();
+		ny = pos.first.first;
+		nx = pos.first.second;
+		length = pos.second;
+		if(ny==0&&nx==0) break;
+		board[ny][nx] = 0;
+		sy = ny; sx = nx;
+		eatFish++;
+		//cout<<ny<<","<<nx<<" len = "<<length<<" big = "<<big<<endl;
+		if(eatFish==big){
+			eatFish=0;
+			big++;
+		}
+		
+		count+=length;
+	}
+	return count;
+}
+
+int main(void)
+{
+	cin>>len;
+	int i,k;
+	for(i=1; i<=len; ++i){
+		for(k=1; k<=len; ++k){
+			cin>>board[i][k];
+			if(board[i][k]==9){
+				sy = i;
+				sx = k;
+				board[i][k] = 0;
+			}
+		}
+	}
+	cout<<solve();
+	return 0;
+}

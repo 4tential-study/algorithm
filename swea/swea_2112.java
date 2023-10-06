@@ -71,7 +71,7 @@ public class swea_2112 {
     }
 
     public static void subset(int level, int[] temp){
-    	if(level == D) {
+    	if(level == D ) {
     		//A로셀변경 or B로 셀변경 
     		List<Integer> list = new ArrayList<>();
     		for (int i = 0; i < visited.length; i++) {

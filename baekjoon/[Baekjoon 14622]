@@ -1,0 +1,103 @@
+#include<iostream>
+#include<set>
+#define fastio ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+using namespace std;
+
+long long eras[5000001];	//소수면 1임 
+set<long long> d;
+set<long long> g;
+
+
+void sosuInit(){
+	long long i,k;
+	for(i=2; i<=5000000; ++i){
+		eras[i] = 0;	
+	}
+	for(i=2; i<=5000000; ++i){
+		if(eras[i]==0){
+			for(k=i; k<=5000000; k+=i){
+				eras[k] = 2;
+			}
+			eras[i] = 1;
+		}
+	}
+	eras[0] = 0;
+	eras[1] = 0;
+}
+
+int main(void)
+{
+	//fastio;
+	long long numofturn;
+	cin>>numofturn;
+	long long i, f,s;
+	long long dScore=0, gScore=0, tempScore;
+	sosuInit();
+	for(i=0; i<numofturn; ++i){
+		cin>>f>>s;
+		if(eras[f]==1){	//대웅이가 부른 수가 소수이면  
+			if(g.count(f)==1||d.count(f)==1){
+				dScore-=1000;
+			}
+			else{
+				d.insert(f);
+			}
+		}
+		else{
+			if(g.size()>=3){
+				long long index=0;
+				for(auto iter=g.rbegin(); iter!=g.rend(); ++iter){
+					index++;
+					if(index==3){
+						tempScore = *iter;
+						break;
+					}
+				}
+				gScore+=tempScore;
+				
+			}
+			else{
+	
+				gScore+=1000;
+			}
+		}
+		
+		if(eras[s]==1){	//규성이가 부른 수가 소수이면  
+			if(g.count(s)==1||d.count(s)==1){
+				gScore-=1000;
+			}
+			else{
+				g.insert(s);
+			}
+		}
+		else{
+			if(d.size()>=3){
+				long long index=0;
+				for(auto iter=d.rbegin(); iter!=d.rend(); ++iter){
+					index++;
+					if(index==3){
+						tempScore = *iter;
+						break;
+					}
+				}
+				
+				dScore+=tempScore;
+			}
+			else{
+				dScore+=1000;
+				
+			}
+		}
+		
+	}
+	if(dScore>gScore){
+		cout<<"소수의 신 갓대웅";
+	}
+	else if(dScore<gScore){
+		cout<<"소수 마스터 갓규성";
+	}
+	else{
+		cout<<"우열을 가릴 수 없음";
+	}
+	return 0;
+}

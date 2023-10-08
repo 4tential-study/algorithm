@@ -44,13 +44,8 @@ public class boj_2156 {
             dp[i][2] = Math.max(Math.max(dp[i-3][1] , dp[i-3][2]),dp[i-3][0]) + array[i] + array[i-1];
             dp[i][0] = Math.max(Math.max(dp[i-1][1], dp[i-1][2]), dp[i-1][0]);
         }
-//		
-//		for(int i=1 ; i < dp.length ; i++) {
-//			System.out.println(Arrays.toString(dp[i]));
-//
-//		}
+
         System.out.println( Math.max(Math.max(dp[n][1] , dp[n][2]), dp[n][0]));
-//		[0, 6, 10, 13, 9, 8, 1, 1, 2, 4]
     }
 
 }

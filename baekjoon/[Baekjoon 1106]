@@ -1,0 +1,49 @@
+#include<iostream>
+#include<vector>
+#include<algorithm>
+using namespace std;
+
+struct two{
+	int money, people;
+};
+
+int goal_head, num;
+vector<two> v;
+int dp[2020]; 	//dp[i] = i명 을 동원했을때 로 구할수 있는 최소 비용 
+ 
+int solve(){
+	int i,k;
+	for(i=0; i<=2019; ++i){
+		dp[i] = 100000000;
+	} 
+	int don, head;
+	dp[0] = 0;
+	for(i=0; i<=2019; ++i){
+		for(k=0; k<num; ++k){
+			don = v[k].money;
+			head = v[k].people;
+			if(i-head>=0){
+				dp[i] = min(dp[i], dp[i-head]+don);
+			}
+		}
+	}
+	int choiso = 10000000, dap;
+	for(i=goal_head; i<=2019; ++i){
+		choiso = min(choiso, dp[i]);
+		
+	}
+	return choiso;
+}
+
+int main(void)
+{
+	cin>>goal_head>>num;
+	int i, money, people;
+	for(i=0; i<num; ++i){
+		cin>>money>>people;
+		//g = (double)(people)/(double)(money);
+		v.push_back({money, people});
+	}
+	cout<<solve();
+	return 0;
+} 

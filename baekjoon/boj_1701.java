@@ -1,7 +1,7 @@
 import java.io.*;
 
 public class boj_1701 {
-    static int max =0;
+    static int max = 0;
     public static void main(String[] args) throws IOException{
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         System.out.println(makeTable(br.readLine()));

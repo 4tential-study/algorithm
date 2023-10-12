@@ -3,7 +3,8 @@
 #include <vector>
 using namespace std;
 
-// 좌측으로 회전 += 1 : 상 좌 하 우
+// 좌측으로 회전 -> +1 : 상 좌 하 우
+// 우측으로 회전 -> +3
 constexpr int dx[4] = {-1,0,1,0};
 constexpr int dy[4] = {0,-1,0,1};
 
@@ -11,6 +12,7 @@ constexpr int dy[4] = {0,-1,0,1};
 constexpr int ddx[8] = { -1,0,1,0,1,1,-1,-1, };
 constexpr int ddy[8] = { 0,-1,0,1,1,-1,1,-1, };
 
+// 좌표, 방향
 struct POS {
 	int x, y;
 	int dir;
@@ -34,9 +36,10 @@ int light[15][15];
 // 아리의 위치, 방향
 POS Ari;
 
-// 고양이들의 위치, 방향
+// 좀비들의 위치, 방향
 vector<POS> zombi;
 
+// 아리 이동
 bool moveAri(char ch) {
 	if (ch == 'F') {
 		int nx = Ari.x + dx[Ari.dir];
@@ -82,6 +85,7 @@ bool moveAri(char ch) {
 	return false;
 }
 
+// 좀비 이동
 bool moveZombi() {
 	for (int i = 0; i < zombi.size(); i++) {
 		int nx = zombi[i].x + dx[zombi[i].dir];

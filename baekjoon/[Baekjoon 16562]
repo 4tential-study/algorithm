@@ -1,0 +1,61 @@
+#include<iostream>
+#include<vector>
+#define fastio ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+using namespace std;
+
+int numofstud, numofrel, money;
+int friendPrice[10001];
+bool visit[10001];
+vector<int> v[10001];
+
+void visitClear(){
+	int i;
+	for(i=1; i<=numofstud; ++i){
+		visit[i] = false;
+	}
+}
+
+int dfs(int now){
+	visit[now] = true;
+	int i, next, ret = friendPrice[now];
+	for(i=0; i<v[now].size(); ++i){
+		next = v[now][i];
+		if(!visit[next]){
+			ret = min(ret, dfs(next));
+		}
+	}
+	return ret;
+}
+
+void solve(){
+	visitClear();
+	int i, temp, sum=0;
+	for(i=1; i<=numofstud; ++i){
+		if(!visit[i]){
+			temp = dfs(i);
+			sum+=temp;
+			if(sum>money){
+				cout<<"Oh no";
+				exit(0);
+			}
+		}
+	}
+	cout<<sum;
+}
+
+int main(void)
+{
+	fastio;
+	cin>>numofstud>>numofrel>>money;
+	int i, a,b;
+	for(i=1; i<=numofstud; ++i){
+		cin>>friendPrice[i];
+	}
+	for(i=0; i<numofrel; ++i){
+		cin>>a>>b;
+		v[a].push_back(b);
+		v[b].push_back(a);
+	}
+	solve();
+	return 0;
+}

@@ -26,7 +26,7 @@ public class BOJ_14938 {
 	// 최대값
 	static int maxItems;
 
-	// 방문 배열
+	// 다익스트라 거리 배열
 	static int[] dist;
 	
 	public static void main(String[] args) throws IOException {

@@ -42,7 +42,7 @@ public class B14938 {
 		for(int start = 1; start <= vertex_count; start++) {
 			int value = 0;
 			for(int end = 1; end <= vertex_count; end++) {
-				if(road[start][end] <= range || start == end) value += items[end];
+				if(road[start][end] <= range) value += items[end];
 			}
 			answer = Math.max(answer, value);
 		}

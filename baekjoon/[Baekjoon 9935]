@@ -1,0 +1,75 @@
+#include<iostream>
+#include<string>
+#include<deque>
+#include<map>
+#define fastio ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+using namespace std;
+
+string longStr, shortStr;
+map<char, int> m;
+
+void solve(){
+	int i;
+	for(i=0; i<shortStr.length(); ++i){
+		m.insert({shortStr[i], i});
+	}
+	deque<char> dq;	
+	char firstC = shortStr[0] ,c;
+	string dap="";
+	for(i=0; i<longStr.length(); ++i){
+		if(longStr[i]==firstC){
+			dq.push_back(longStr[i]);
+			if(m[longStr[i]]==shortStr.length()-1){
+				for(int k=0; k<shortStr.length(); ++k){
+					dq.pop_back();
+				}
+			}
+		}
+		else{
+			if(m.count(longStr[i])==0){
+				while(!dq.empty()){
+					dap.push_back(dq.front());
+					dq.pop_front();
+				}
+				dap.push_back(longStr[i]);
+			}
+			else{
+				if(dq.empty()){
+					dap.push_back(longStr[i]);
+				}
+				else{
+					c = dq.back();
+					if(m[c]+1==m[longStr[i]]){
+						dq.push_back(longStr[i]);
+						if(m[longStr[i]]==shortStr.length()-1){
+							for(int k=0; k<shortStr.length(); ++k){
+								dq.pop_back();
+							}
+						}
+					}
+					else{
+						while(!dq.empty()){
+							dap.push_back(dq.front());
+							dq.pop_front();
+						}
+						dap.push_back(longStr[i]);
+					}
+				}
+			}
+		}
+	}
+	while(!dq.empty()){
+		dap.push_back(dq.front());
+		dq.pop_front();
+	}
+	if(dap.length()==0) cout<<"FRULA";
+	else cout<<dap;
+}
+
+int main(void)
+{
+	fastio;
+	cin>>longStr>>shortStr;
+	solve();
+	return 0;
+}

@@ -22,7 +22,8 @@ public class B16234 {
 		
 		
 		board = new int[N][N];
-		
+
+		// board 입력
 		for(int y = 0; y < N; y++) {
 			input = in.readLine().split(" ");
 			for(int x = 0; x < N; x++)
@@ -37,12 +38,12 @@ public class B16234 {
 				for(int x = 0; x < N; x++) {
 					if(!visited[y][x]) {
 						visited[y][x] = true;
-						if(BFS(visited, y, x) && !isChanged)	isChanged = true;
+						if(BFS(visited, y, x) && !isChanged) isChanged = true;
 					}
 				}
 			}
-			
-			if(isChanged) days++;
+			// 인구 이동이 진행되었다면 한 번 더 탐색함
+			if(isChanged) days++; 
 			else break;
 		}
 		
@@ -50,9 +51,9 @@ public class B16234 {
 	}
 	
 	static boolean BFS(boolean[][] visited, int y, int x) {
-		int sum = 0;
-		List<int[]> list = new ArrayList<>();
-		Queue<int[]> queue = new ArrayDeque<>();
+		int sum = 0; // 인구 이동이 진행될 총 인구 수
+		List<int[]> list = new ArrayList<>(); // 인구 이동이 진행될 나라의 좌표
+		Queue<int[]> queue = new ArrayDeque<>(); // BFS 탐색을 위한 Queue
 		queue.offer(new int[] {y, x});
 		list.add(new int[] {y, x});
 		
@@ -64,7 +65,8 @@ public class B16234 {
 				int dx = cx + dir[type][1];
 				if(dy >= 0 && dx >= 0 && dy < N && dx < N && !visited[dy][dx]) {
 					int value = Math.abs(current - board[dy][dx]);
-					if(value >= L && value <= R) { // 인접한 두 나라의 인구 수 차가 조건에 맞다면 queue와 list에 추가함.
+					// 인접한 두 나라의 인구 차가 조건에 맞다면 queue와 list에 추가함.
+					if(value >= L && value <= R) { 
 						visited[dy][dx] = true;
 						queue.offer(new int[] {dy, dx});
 						list.add(new int[] {dy, dx});
@@ -72,11 +74,12 @@ public class B16234 {
 				}
 			}
 		}
-		// list의 크기가 2 이상이라면 인구 이동이 진행되었음을 의미하므로, 인구 이동 진행 후 true를 반환.
+		// list의 크기가 2 이상이라면 인구 이동이 진행되었음을 의미. 인구 이동 진행 후 true를 반환.
 		if(list.size() >= 2) {
-			calcBoard(list, sum);
+			calcBoard(list, sum); // 인구 이동
 			return true;
 		}
+		// 인구 이동이 진행되지 않을 경우, false 반환.
 		else return false;
 	}
 	

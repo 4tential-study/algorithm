@@ -1,0 +1,74 @@
+#include<iostream>
+#include<vector>
+#include<queue>
+#define fastio ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
+using namespace std;
+
+int numofcom, numofrel, firstCom;
+vector<pair<int, int>> v[10001];
+int dist[10001];
+
+void init(){
+	int i;
+	for(i=1; i<=numofcom; ++i){
+		v[i].clear();
+	}
+}
+
+void dijkstra(){
+	int i;
+	for(i=1; i<=numofcom; ++i){
+		dist[i] = 2100000000;
+	}
+	
+	priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+	dist[firstCom] = 0;
+	pq.push({0,firstCom});
+	int nowd, nowv, nextd, nextv;
+	while(!pq.empty()){
+		nowd = pq.top().first;
+		nowv = pq.top().second;
+		pq.pop();
+		if(nowd>dist[nowv]) continue;
+		
+		for(i=0; i<v[nowv].size(); ++i){
+			nextv = v[nowv][i].first;
+			nextd = v[nowv][i].second+nowd;
+			if(dist[nextv]>nextd){
+				dist[nextv]=nextd;
+				pq.push({nextd, nextv});
+			}
+		}
+	}
+	int maxT = -1, num=0;
+	for(i=1; i<=numofcom; ++i){
+		if(dist[i]!=2100000000){
+			num++;
+			maxT = max(maxT, dist[i]);
+		}
+	}
+	cout<<num<<" "<<maxT;
+}
+
+void solve(){
+	dijkstra();
+	
+}
+
+int main(void)
+{
+	fastio;
+	int testcase, from, to, d;
+	cin>>testcase;
+	for(int t=0; t<testcase; ++t){
+		cin>>numofcom>>numofrel>>firstCom;	
+		init();
+		for(int i=0; i<numofrel; ++i){
+			cin>>to>>from>>d;
+			v[from].push_back({to, d});
+		}
+		solve();
+		cout<<"\n";
+	}
+	return 0;
+}

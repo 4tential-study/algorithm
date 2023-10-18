@@ -63,8 +63,8 @@ int main() {
 			}
 		}
 
-		int time = 0;
 		// 최대값 구하기
+		int time = 0;
 		for (int i = 1; i <= N; i++) {
 			if (dist[i] != INF && dist[i] > time) time = dist[i];
 		}

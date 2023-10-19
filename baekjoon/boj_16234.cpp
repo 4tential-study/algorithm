@@ -12,7 +12,7 @@ typedef pair<int, int> pii;
 
 int N, L, R;
 int arr[51][51];
-int chk[51][51];//���
+int chk[51][51];
 int way[4][2] = { {-1,0},{0,1},{1,0},{0,-1} };
 
 void init() {
@@ -23,45 +23,43 @@ void init() {
 
 queue<pii> q;
 vector<pii> v;
-int chk2[51][51];//ť�� üũ
 int clusterId;
 
 bool noMove;
 void findCluster(int sy, int sx,int cid) {
 	
 	while (!q.empty()) q.pop();
-	memset(chk2, 0, sizeof(chk2));
 	assert(v.empty());
 
 	q.push({ sy,sx });
-	chk2[sy][sx] = 1;
-
+	chk[sy][sx] = 1;
+	//클러스터 찾기
 	int cnt = 0, sum = 0;
 	while (!q.empty()) {
 		int y = q.front().first;
 		int x = q.front().second;
 		q.pop();
 
-		chk[y][x] = cid;//��� ǥ��
+		chk[y][x] = cid;//덩어리 표시
 		sum += arr[y][x]; cnt++;
 		v.push_back({ y,x });
 		
 		for (int w = 0; w < 4; w++) {
 			int ny = y + way[w][0];
 			int nx = x + way[w][1];
-			if (ny >= 0 && nx >= 0 && ny < N&&nx < N&&chk2[ny][nx]==0&&chk[ny][nx]==0) {
+			if (ny >= 0 && nx >= 0 && ny < N&&nx < N&&chk[ny][nx]==0) {
 				
 				int gap = abs(arr[y][x] - arr[ny][nx]);
 				if (L <= gap && gap <= R) {
-					noMove = false;
-					chk2[ny][nx] = 1;
+					noMove = false; //이동이 1번 이상 있었다
+					chk[ny][nx] = 1;
 					q.push({ ny,nx });
 				}
 			}
 		}
 	}
 
-	//�̵��ϱ�
+	//이동하기
 	int k = floor(sum / cnt);
 	while (!v.empty()) {
 		int y = v.back().first;
@@ -88,7 +86,7 @@ bool solve() {
 
 
 int main() {
-	freopen("sample_input.txt", "r", stdin);
+	//freopen("sample_input.txt", "r", stdin);
 	ios::sync_with_stdio(false); cin.tie(NULL); cout.tie(NULL);
 
 	init();
@@ -98,5 +96,5 @@ int main() {
 	}
 	cout << i << endl;
 
-	fclose(stdin);
+	//fclose(stdin);
 }
